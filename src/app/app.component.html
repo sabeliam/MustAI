@@ -1,0 +1,25 @@
+<tui-root>
+    <div class="tui-container tui-container_adaptive">
+        <tui-input
+            [formControl]="input"
+            class="tui-space_vertical-5"
+        >
+            Введи что хочешь
+        </tui-input>
+
+        <button tuiButton (click)="submit()">Сабмит</button>
+
+        <tui-loader [showLoader]="isLoading">
+            <ng-container *ngIf="answer$ | async as answers">
+                <div *ngIf="answers.length">
+                    <h3 class="tui-text_h3">Ответы</h3>
+
+                    <div *ngFor="let answer of answers">
+                        {{answer.text}}
+                    </div>
+                </div>
+            </ng-container>
+        </tui-loader>
+
+    </div>
+</tui-root>
