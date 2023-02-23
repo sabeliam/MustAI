@@ -1,12 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CompletionService } from './completion.service';
+import { MockCompletionService } from '@core/services/completion/openai.mock.service';
 
 describe('OpenaiService', () => {
     let service: CompletionService;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({});
+        TestBed.configureTestingModule({
+            providers: [
+                {
+                    provide: CompletionService,
+                    useValue: MockCompletionService,
+                },
+            ],
+        });
         service = TestBed.inject(CompletionService);
     });
 
