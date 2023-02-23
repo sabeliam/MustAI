@@ -1,0 +1,16 @@
+@import "@taiga-ui/core/styles/taiga-ui-local";
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+@media @tui-mobile {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 1rem 0;
+    }
+}

@@ -1,25 +1,12 @@
 <tui-root>
     <div class="tui-container tui-container_adaptive">
-        <tui-input
-            [formControl]="input"
-            class="tui-space_vertical-5"
-        >
-            Введи что хочешь
-        </tui-input>
+        <app-assistant></app-assistant>
 
-        <button tuiButton (click)="submit()">Сабмит</button>
+        <app-films></app-films>
 
-        <tui-loader [showLoader]="isLoading">
-            <ng-container *ngIf="answer$ | async as answers">
-                <div *ngIf="answers.length">
-                    <h3 class="tui-text_h3">Ответы</h3>
-
-                    <div *ngFor="let answer of answers">
-                        {{answer.text}}
-                    </div>
-                </div>
-            </ng-container>
-        </tui-loader>
-
+        <!--        <div>-->
+        <!--            <h3 class="tui-text_h3">Check media</h3>-->
+        <!--            <button tuiButton (click)="getMicrophone()">Сабмит</button>-->
+        <!--        </div>-->
     </div>
 </tui-root>

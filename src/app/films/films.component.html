@@ -1,0 +1,11 @@
+<h2 class="tui-text_h2">Список фильмов</h2>
+<button tuiButton (click)="addFilm()">Добавить фильм</button>
+<div class="container">
+    <app-card
+        *ngFor="let film of filmList$ | async"
+        [category]="'Фильм'"
+        [item]="film"
+        (delete)="removeFilm($event)"
+    >
+    </app-card>
+</div>

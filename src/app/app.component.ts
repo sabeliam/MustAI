@@ -1,34 +1,41 @@
-import {Component} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {OpenaiService} from './core/services/openai.service';
-import {BehaviorSubject} from 'rxjs';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { CompletionService } from '@core/services/completion/completion.service';
+import { BehaviorSubject, from, map, Subject, switchMap } from 'rxjs';
+import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.less']
+    styleUrls: ['./app.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
     title = 'MustAI';
-    input = new FormControl<string>('');
-    isLoading = false;
 
-    answer$ = new BehaviorSubject<any[]>([]);
+    constructor(
+        private readonly openaiService: CompletionService,
+        private readonly tuiAlertService: TuiAlertService
+    ) {}
 
-    constructor(private readonly openaiService: OpenaiService) {
-    }
-
-    submit() {
-        if (!this.input.value) {
-            return;
+    getMicrophone() {
+        if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
+            this.tuiAlertService
+                .open('access denied', { status: TuiNotification.Error })
+                .subscribe();
         }
 
-        this.isLoading = true
-        this.openaiService
-            .getResponse(this.input.value)
-            .subscribe(value => {
-                this.isLoading = false;
-                this.answer$.next(value.choices)
-            });
+        from(navigator.mediaDevices.getUserMedia({ audio: true }))
+            .pipe(
+                map((stream) => {
+                    stream.getTracks().forEach((track) => track.stop());
+                }),
+                switchMap(() =>
+                    this.tuiAlertService.open('access granted', {
+                        status: TuiNotification.Success,
+                    })
+                )
+            )
+            .subscribe(console.log);
     }
 }

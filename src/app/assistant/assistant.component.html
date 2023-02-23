@@ -1,0 +1,17 @@
+<tui-input [formControl]="input" class="tui-space_vertical-5">
+    Введи что хочешь
+</tui-input>
+
+<button (click)="submit()" tuiButton>Отправить</button>
+
+<tui-loader [showLoader]="isLoading">
+    <div *ngIf="answer$ | async as answer">
+        <h3 class="tui-text_h3">Ответы</h3>
+
+        <div *ngFor="let choice of answer.choices">
+            <div *ngFor="let film of getListFromText(choice.text)">
+                {{film}}
+            </div>
+        </div>
+    </div>
+</tui-loader>

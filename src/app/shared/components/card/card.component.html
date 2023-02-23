@@ -1,0 +1,18 @@
+<tui-island [hoverable]="true" (click)="cardClick.emit(item.id)">
+    <div class="tui-island__content">
+        <div class="tui-island__close">
+            <button
+                (click)="delete.emit(item.id)"
+                tuiIconButton
+                icon="tuiIconTrashLarge"
+                size="m"
+                appearance="icon"
+            ></button>
+        </div>
+    </div>
+    <p *ngIf="category" class="tui-island__category">{{ category }}</p>
+    <h3 class="tui-island__title">{{ item.name }}</h3>
+    <p class="tui-island__paragraph">
+        {{ item.description }}
+    </p>
+</tui-island>

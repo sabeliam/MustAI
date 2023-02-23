@@ -1,26 +1,42 @@
-import {NgDompurifySanitizer} from '@tinkoff/ng-dompurify';
+import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import {
     TuiRootModule,
     TuiDialogModule,
     TuiAlertModule,
     TUI_SANITIZER,
     TuiButtonModule,
-    TuiLoaderModule
+    TuiLoaderModule,
 } from '@taiga-ui/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { inject, NgModule, isDevMode } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {TuiInputModule} from '@taiga-ui/kit';
-import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { TuiInputModule } from '@taiga-ui/kit';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ENVIRONMENT } from '@core/environment/environment';
+import { environment } from '../environments/environment';
+import { CompletionService } from '@core/services/completion/completion.service';
+import { MockCompletionService } from '@core/services/completion/openai.mock.service';
+import { AssistantModule } from './assistant/assistant.module';
+import { FilmsModule } from './films/films.module';
+import { NgxsModule } from '@ngxs/store';
+import { FilmsState } from './films/films.state';
+import { ServiceWorkerModule } from '@angular/service-worker';
+
+function completionFactory() {
+    const env = inject(ENVIRONMENT);
+    const httpClient = inject(HttpClient);
+
+    return env.production
+        ? new CompletionService(env, httpClient)
+        : new MockCompletionService();
+}
 
 @NgModule({
-    declarations: [
-        AppComponent
-    ],
+    declarations: [AppComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -32,10 +48,32 @@ import {HttpClientModule} from '@angular/common/http';
         ReactiveFormsModule,
         HttpClientModule,
         TuiButtonModule,
-        TuiLoaderModule
+        TuiLoaderModule,
+        TuiAlertModule,
+        AssistantModule,
+        FilmsModule,
+        NgxsModule.forRoot([FilmsState]),
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: !isDevMode(),
+          // Register the ServiceWorker as soon as the application is stable
+          // or after 30 seconds (whichever comes first).
+          registrationStrategy: 'registerWhenStable:30000'
+        }),
     ],
-    providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
-    bootstrap: [AppComponent]
+    providers: [
+        {
+            provide: TUI_SANITIZER,
+            useClass: NgDompurifySanitizer,
+        },
+        {
+            provide: ENVIRONMENT,
+            useValue: environment,
+        },
+        {
+            provide: CompletionService,
+            useFactory: completionFactory,
+        },
+    ],
+    bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
