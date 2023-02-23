@@ -19,12 +19,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ENVIRONMENT } from '@core/environment/environment';
 import { environment } from '../environments/environment';
 import { CompletionService } from '@core/services/completion/completion.service';
-import { MockCompletionService } from '@core/services/completion/openai.mock.service';
 import { AssistantModule } from './assistant/assistant.module';
 import { FilmsModule } from './films/films.module';
 import { NgxsModule } from '@ngxs/store';
 import { FilmsState } from './films/films.state';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { MockCompletionService } from '@core/services/completion/completion.mock.service';
+import { DescriptionService } from '@core/services/description/description.service';
 
 function completionFactory() {
     const env = inject(ENVIRONMENT);
@@ -72,6 +73,10 @@ function completionFactory() {
         {
             provide: CompletionService,
             useFactory: completionFactory,
+        },
+        {
+            provide: DescriptionService,
+            useClass: DescriptionService,
         },
     ],
     bootstrap: [AppComponent],

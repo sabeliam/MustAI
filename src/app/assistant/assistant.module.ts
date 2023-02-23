@@ -4,6 +4,7 @@ import { AssistantComponent } from './assistant.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TuiInputModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLoaderModule } from '@taiga-ui/core';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
     declarations: [AssistantComponent],
@@ -13,6 +14,7 @@ import { TuiButtonModule, TuiLoaderModule } from '@taiga-ui/core';
         TuiInputModule,
         TuiLoaderModule,
         TuiButtonModule,
+        SharedModule,
     ],
     exports: [AssistantComponent],
 })

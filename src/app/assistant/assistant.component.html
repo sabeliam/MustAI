@@ -5,13 +5,25 @@
 <button (click)="submit()" tuiButton>Отправить</button>
 
 <tui-loader [showLoader]="isLoading">
-    <div *ngIf="answer$ | async as answer">
+    <div *ngIf="answer$ | async as answers">
         <h3 class="tui-text_h3">Ответы</h3>
 
-        <div *ngFor="let choice of answer.choices">
-            <div *ngFor="let film of getListFromText(choice.text)">
-                {{film}}
+        <!--        <div *ngFor="let choice of answer.choices">-->
+        <!--            <div *ngFor="let film of getListFromText(choice.text)">-->
+        <!--                {{film}}-->
+        <!--                <button (click)="getDescription(film)" size="s" tuiButton>-->
+        <!--                    download info-->
+        <!--                </button>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div class="container">
+            <div *ngFor="let answer of answers">
+                <app-card
+                    [category]="'movie'"
+                    [item]="getItem(answer)"
+                ></app-card>
             </div>
         </div>
+
     </div>
 </tui-loader>

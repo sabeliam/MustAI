@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AssistantComponent } from './assistant.component';
 import { CompletionService } from '@core/services/completion/completion.service';
-import { MockCompletionService } from '@core/services/completion/openai.mock.service';
+import { MockCompletionService } from '@core/services/completion/completion.mock.service';
 
 describe('AssistantComponent', () => {
     let component: AssistantComponent;

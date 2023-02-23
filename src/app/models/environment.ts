@@ -3,4 +3,5 @@ export interface Environment {
     production: boolean;
     openAiApiKey: string;
     openAiCompletionUrl: string;
+    tmdbApiKey: string;
 }

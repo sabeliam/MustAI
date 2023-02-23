@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CompletionService } from '@core/services/completion/completion.service';
-import { MockCompletionService } from '@core/services/completion/openai.mock.service';
+import { MockCompletionService } from '@core/services/completion/completion.mock.service';
 
 describe('AppComponent', () => {
     beforeEach(async () => {

@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FilmsState } from './films.state';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { Film } from '@models';
-import { AddFilm, RemoveFilm } from './films.actions';
-import { mockFilm } from '../../mocks/film';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {FilmsState} from './films.state';
+import {Select, Store} from '@ngxs/store';
+import {Observable} from 'rxjs';
+import {Film} from '@models';
+import {AddFilm, RemoveFilm} from './films.actions';
+import {mockFilm} from '../../mocks/film';
+import {DescriptionService} from '@core/services/description/description.service';
 
 @Component({
     selector: 'app-films',
@@ -15,7 +16,11 @@ import { mockFilm } from '../../mocks/film';
 export class FilmsComponent {
     @Select(FilmsState.filmList) public filmList$: Observable<Film[]>;
 
-    constructor(private readonly store: Store) {}
+    constructor(
+        private readonly store: Store,
+        private readonly descriptionService: DescriptionService
+    ) {
+    }
 
     addFilm(): void {
         this.store.dispatch(new AddFilm(mockFilm()));
@@ -23,5 +28,9 @@ export class FilmsComponent {
 
     removeFilm(id: string): void {
         this.store.dispatch(new RemoveFilm(id));
+    }
+
+    getDescription() {
+
     }
 }

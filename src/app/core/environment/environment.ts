@@ -7,5 +7,6 @@ export const ENVIRONMENT = new InjectionToken<Environment>('environment', {
         openAiApiKey: '',
         openAiCompletionUrl: '',
         production: false,
+        tmdbApiKey: '',
     }),
 });
