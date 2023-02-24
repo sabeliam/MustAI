@@ -16,10 +16,7 @@ import { DescriptionService } from '@core/tmdb/description/description.service';
 export class FilmsComponent {
     @Select(FilmsState.filmList) public filmList$: Observable<Film[]>;
 
-    constructor(
-        private readonly store: Store,
-        private readonly descriptionService: DescriptionService
-    ) {}
+    constructor(private readonly store: Store) {}
 
     addFilm(): void {
         this.store.dispatch(new AddFilm(mockFilm()));
