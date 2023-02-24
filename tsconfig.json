@@ -45,6 +45,12 @@
             ],
             "@utils": [
                 "src/app/utils/index"
+            ],
+            "@mocks/*": [
+                "src/app/mocks/*"
+            ],
+            "@mocks": [
+                "src/app/mocks/index"
             ]
         }
     },

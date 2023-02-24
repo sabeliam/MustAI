@@ -22,7 +22,9 @@ export class CompletionService implements Completion {
     constructor(
         @Inject(ENVIRONMENT) private readonly env: Environment,
         private readonly httpClient: HttpClient
-    ) {}
+    ) {
+        debugger;
+    }
 
     public getResponse(ask: string): Observable<CreateCompletionResponse> {
         const prompt = `Приведи список фильмов с тэгами: ${ask}, добавь в список их imdb id`;

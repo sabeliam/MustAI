@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Completion } from '../../../models/completion';
-import { mapTo, Observable, of, timer } from 'rxjs';
+import { Completion } from '@models';
+import { mapTo, Observable, timer } from 'rxjs';
 import { CreateCompletionResponse } from 'openai';
 import { mockResponse } from '../../../../mocks/index';
 

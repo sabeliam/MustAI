@@ -1,0 +1,45 @@
+<div>
+    {{answer}}
+</div>
+<!--<button (click)="toggle(true)" (tuiActiveZoneChange)="toggle($event)" apperance="secondary" size="m" tuiButton>-->
+<!--    Подробнее-->
+
+<!--    <div *tuiSidebar="openSideBar; direction: 'right'">-->
+<!--        <tui-scrollbar>-->
+<!--            <ng-container *ngIf="getDescription(answer) | async as film">-->
+
+<!--            </ng-container>-->
+<!--        </tui-scrollbar>-->
+
+
+<!--    </div>-->
+<!--</button>-->
+
+<button (click)="addFilm()" apperance="secondary" size="m" tuiButton>
+    Добавить
+</button>
+
+<button (click)="showDialog(card)" apperance="secondary" size="m" tuiButton>
+    Подробнее
+</button>
+
+<ng-template #card let-film="data">
+    <div class="tui-island__content">
+        <p *ngIf="film.adult" class="tui-island__category">Для взрослых</p>
+        <img *ngIf="film.poster_path" [src]="getImgUrl(film.poster_path)" alt="img">
+        <h3 class="tui-text_h3 tui-space_vertical-2">{{ film.title }}</h3>
+
+        <h6 class="tui-text_h6 tui-space_vertical-1">Дата выхода</h6>
+        <div class="tui-island__paragraph">
+            {{ film.release_date }}
+        </div>
+
+        <h6 class="tui-text_h6 tui-space_vertical-1">Описание</h6>
+        <div class="tui-island__paragraph">
+            {{ film.overview }}
+        </div>
+    </div>
+</ng-template>
+
+<!--    <button (click)="context.complete()"></button>-->
+

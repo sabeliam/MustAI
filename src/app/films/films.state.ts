@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { Film } from '../models/index';
+import { Film } from '@models';
 import { AddFilm, RemoveFilm } from './films.actions';
 
 interface FilmsStateModel {

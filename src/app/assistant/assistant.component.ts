@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CompletionService } from '../core/services/completion/completion.service';
-import { TuiAlertService } from '@taiga-ui/core';
+import {
+    TuiAlertService,
+    TuiDialogContext,
+    TuiDialogService,
+} from '@taiga-ui/core';
 import { CreateCompletionResponse } from 'openai';
 import { FormControl } from '@angular/forms';
 import {
@@ -11,12 +15,14 @@ import {
     mergeMap,
     Observable,
     of,
+    scan,
     Subject,
     switchMap,
 } from 'rxjs';
-import { DescriptionService } from '@core/services/description/description.service';
+import { DescriptionService } from '@core/tmdb/description/description.service';
 import { Film } from '@models';
 import { BaseItem } from '@models/base-item';
+import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
 
 @Component({
     selector: 'app-assistant',
@@ -28,11 +34,12 @@ export class AssistantComponent {
     input = new FormControl<string>('');
     isLoading = false;
 
-    answer$: BehaviorSubject<Film[]> = new BehaviorSubject<Film[]>([]);
+    answer$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
     constructor(
         private readonly openaiService: CompletionService,
-        private readonly descriptionService: DescriptionService
+        private readonly descriptionService: DescriptionService,
+        private readonly dialogService: TuiDialogService
     ) {}
 
     submit() {
@@ -50,10 +57,9 @@ export class AssistantComponent {
                 ),
                 switchMap((value: string) => {
                     return from(this.getListFromText(value));
-                }),
-                mergeMap((value) =>
-                    this.getDescription(value).pipe(delay(1000))
-                )
+                })
+                // mergeMap((value) => this.getDescription(value)),
+                // scan((films, film) => films.concat(film), [])
             )
             .subscribe((value) => {
                 this.isLoading = false;
@@ -66,15 +72,6 @@ export class AssistantComponent {
         // });
     }
 
-    getItem(object: any): BaseItem {
-        return {
-            id: object.id,
-            name: object.title,
-            description: object.overview,
-            imgUrl: `https://image.tmdb.org/t/p/w500/${object.poster_path}`,
-        };
-    }
-
     getListFromText(text: string | undefined): string[] {
         if (!text) {
             return [];
@@ -85,19 +82,18 @@ export class AssistantComponent {
             .filter((value) => !(value === '' || value === ' '));
     }
 
-    getDescription(text: string): Observable<any> {
-        const id = this.extractId(text);
-
-        if (!id) {
-            return of(null);
-        }
-
-        return this.descriptionService.getDescription(id);
-    }
-
-    extractId(string: string): string | null {
-        const array = string.match(/tt\d*/);
-
-        return array && array[0];
+    toggle(text: string, content: PolymorpheusContent<TuiDialogContext>) {
+        // this.openSideBar = !this.openSideBar;
+        // this.getDescription(text)
+        //     .pipe(
+        //         map((value) => this.getItem(value)),
+        //         switchMap((value) => {
+        //             return this.dialogService.open(content, {
+        //                 data: value,
+        //                 closeable: true,
+        //             });
+        //         })
+        //     )
+        //     .subscribe();
     }
 }

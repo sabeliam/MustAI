@@ -1,14 +1,14 @@
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import {
-    TuiRootModule,
-    TuiDialogModule,
-    TuiAlertModule,
     TUI_SANITIZER,
+    TuiAlertModule,
     TuiButtonModule,
+    TuiDialogModule,
     TuiLoaderModule,
+    TuiRootModule,
 } from '@taiga-ui/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { inject, NgModule, isDevMode } from '@angular/core';
+import { inject, isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,15 +25,16 @@ import { NgxsModule } from '@ngxs/store';
 import { FilmsState } from './films/films.state';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MockCompletionService } from '@core/services/completion/completion.mock.service';
-import { DescriptionService } from '@core/services/description/description.service';
+import { DescriptionService } from '@core/tmdb/description/description.service';
+import { TmdbModule } from '@core/tmdb/tmdb.module';
 
 function completionFactory() {
     const env = inject(ENVIRONMENT);
     const httpClient = inject(HttpClient);
 
-    return env.production
-        ? new CompletionService(env, httpClient)
-        : new MockCompletionService();
+    return !env.production
+        ? new MockCompletionService()
+        : new CompletionService(env, httpClient);
 }
 
 @NgModule({
@@ -53,6 +54,7 @@ function completionFactory() {
         TuiAlertModule,
         AssistantModule,
         FilmsModule,
+        TmdbModule,
         NgxsModule.forRoot([FilmsState]),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: !isDevMode(),
@@ -73,10 +75,6 @@ function completionFactory() {
         {
             provide: CompletionService,
             useFactory: completionFactory,
-        },
-        {
-            provide: DescriptionService,
-            useClass: DescriptionService,
         },
     ],
     bootstrap: [AppComponent],

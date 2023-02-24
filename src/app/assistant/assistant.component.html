@@ -17,13 +17,23 @@
         <!--            </div>-->
         <!--        </div>-->
         <div class="container">
-            <div *ngFor="let answer of answers">
-                <app-card
-                    [category]="'movie'"
-                    [item]="getItem(answer)"
-                ></app-card>
+            <div *ngFor="let answer of answers" class="answer">
+                <app-assistant-answer [answer]="answer"></app-assistant-answer>
+                <!--                <app-card-->
+                <!--                    [category]="'movie'"-->
+                <!--                    [item]="getItem(answer)"-->
+                <!--                ></app-card>-->
             </div>
         </div>
 
     </div>
 </tui-loader>
+
+
+<ng-template #dialog let-context let-data="data">
+    <!--    <button (click)="context.complete()"></button>-->
+    <app-card
+        [category]="'movie'"
+        [item]="data"
+    ></app-card>
+</ng-template>

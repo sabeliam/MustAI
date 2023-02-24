@@ -35,7 +35,7 @@ jobs:
                 run: npm install
             -   name: Build
                 run: |
-                    npm run build:ci
+                    npm run build
                 env:
                     OPEN_AI_SECRET: ${{ secrets.OPEN_AI_SECRET }}
                     OPEN_AI_COMPLETION_URL: ${{ vars.OPEN_AI_COMPLETION_URL }}
