@@ -4,7 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "npm run config -- --environment=dev && ng serve",
-        "build": "npm run config -- --environment=prod && ng build --prod",
+        "build": "npm run config -- --environment=prod && ng build --configuration production",
         "build:stats": "npm run build --stats-json",
         "analyze": "webpack-bundle-analyzer dist/MustAI/stats.json",
         "config": "ts-node src/scripts/set-env.ts",
