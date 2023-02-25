@@ -1,0 +1,28 @@
+<button
+    (click)="onClick()"
+    (tuiActiveZoneChange)="onActiveZone($event)"
+    [title]="menu"
+    appearance="icon"
+    class="t-menu"
+    icon="tuiIconMenuLarge"
+    tuiIconButton
+>
+    <app-navigation
+        *tuiSidebar="!!(open$ | async)"
+        class="t-navigation"
+    ></app-navigation>
+</button>
+<!--<div-->
+<!--    polymorpheus-outlet-->
+<!--    class="t-logo"-->
+<!--    [content]="logo"-->
+<!--&gt;-->
+<!--    <ng-template let-src>-->
+<!--        <img-->
+<!--            alt="Logo"-->
+<!--            class="t-img"-->
+<!--            [src]="src"-->
+<!--        />-->
+<!--    </ng-template>-->
+<!--</div>-->
+<ng-content></ng-content>

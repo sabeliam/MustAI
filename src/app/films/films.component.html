@@ -1,11 +1,21 @@
 <h2 class="tui-text_h2">Список фильмов</h2>
-<button tuiButton (click)="addFilm()">Добавить фильм</button>
+
+<!--<form (submit)="getDescription()">-->
+<tui-input [formControl]="input" class="tui-space_vertical-2">
+    Поиск по названию
+</tui-input>
+
+<button (click)="getDescription()" tuiButton> Найти</button>
+<!--</form>-->
+
+
+<button (click)="addFilm()" tuiButton>Добавить фильм</button>
 <div class="container">
     <app-card
+        (delete)="removeFilm($event)"
         *ngFor="let film of filmList$ | async"
         [category]="'Фильм'"
         [item]="film"
-        (delete)="removeFilm($event)"
     >
     </app-card>
 </div>

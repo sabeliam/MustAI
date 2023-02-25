@@ -1,4 +1,4 @@
-<div>
+<div class="answer-text">
     {{answer}}
 </div>
 <!--<button (click)="toggle(true)" (tuiActiveZoneChange)="toggle($event)" apperance="secondary" size="m" tuiButton>-->
@@ -29,10 +29,13 @@
         <img *ngIf="film.poster_path" [src]="getImgUrl(film.poster_path)" alt="img">
         <h3 class="tui-text_h3 tui-space_vertical-2">{{ film.title }}</h3>
 
-        <h6 class="tui-text_h6 tui-space_vertical-1">Дата выхода</h6>
-        <div class="tui-island__paragraph">
-            {{ film.release_date }}
-        </div>
+        <ng-container *ngIf="film.release_date || film.first_air_date">
+            <h6 class="tui-text_h6 tui-space_vertical-1">Дата выхода</h6>
+            <div class="tui-island__paragraph">
+                {{ film.release_date || film.first_air_date }}
+            </div>
+        </ng-container>
+
 
         <h6 class="tui-text_h6 tui-space_vertical-1">Описание</h6>
         <div class="tui-island__paragraph">

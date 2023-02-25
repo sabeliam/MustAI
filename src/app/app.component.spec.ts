@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { CompletionService } from '@core/services/completion/completion.service';
-import { MockCompletionService } from '@core/services/completion/completion.mock.service';
+import { CompletionService } from '@core/completion/opeai/completion.service';
+import { MockCompletionService } from '@core/completion/opeai/completion.mock.service';
 
 describe('AppComponent', () => {
     beforeEach(async () => {

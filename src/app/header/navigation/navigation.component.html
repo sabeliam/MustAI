@@ -1,0 +1,12 @@
+<ng-container *ngFor="let item of items">
+    <a
+        (click)="closeMenu()"
+        [routerLink]="item.route"
+        class="t-sublink"
+        routerLinkActive="t-sublink_active"
+        tuiLink
+    >
+        {{ item.title }}
+    </a>
+</ng-container>
+

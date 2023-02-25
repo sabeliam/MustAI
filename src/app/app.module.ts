@@ -18,24 +18,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ENVIRONMENT } from '@core/environment/environment';
 import { environment } from '../environments/environment';
-import { CompletionService } from '@core/services/completion/completion.service';
+import { CompletionService } from '@core/completion/opeai/completion.service';
 import { AssistantModule } from './assistant/assistant.module';
 import { FilmsModule } from './films/films.module';
 import { NgxsModule } from '@ngxs/store';
 import { FilmsState } from './films/films.state';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MockCompletionService } from '@core/services/completion/completion.mock.service';
-import { DescriptionService } from '@core/tmdb/description/description.service';
-import { TmdbModule } from '@core/tmdb/tmdb.module';
-
-function completionFactory() {
-    const env = inject(ENVIRONMENT);
-    const httpClient = inject(HttpClient);
-
-    return !env.production
-        ? new MockCompletionService()
-        : new CompletionService(env, httpClient);
-}
+import { MockCompletionService } from '@core/completion/opeai/completion.mock.service';
+import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
+import { TmdbModule } from '@core/description/tmdb.module';
+import { CompletionModule } from '@core/completion/completion.module';
+import { NAVIGATION_ITEMS } from './header/navigation/navigation.providers';
+import { TuiDocHeaderModule } from './header/header.module';
+import { TuiSwipeService } from '@taiga-ui/cdk';
 
 @NgModule({
     declarations: [AppComponent],
@@ -55,6 +50,7 @@ function completionFactory() {
         AssistantModule,
         FilmsModule,
         TmdbModule,
+        CompletionModule,
         NgxsModule.forRoot([FilmsState]),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: !isDevMode(),
@@ -62,6 +58,7 @@ function completionFactory() {
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000',
         }),
+        TuiDocHeaderModule,
     ],
     providers: [
         {
@@ -73,8 +70,17 @@ function completionFactory() {
             useValue: environment,
         },
         {
-            provide: CompletionService,
-            useFactory: completionFactory,
+            provide: NAVIGATION_ITEMS,
+            useValue: [
+                {
+                    title: 'Ассистент',
+                    route: 'assistant',
+                },
+                {
+                    title: 'Библиотека',
+                    route: 'library',
+                },
+            ],
         },
     ],
     bootstrap: [AppComponent],

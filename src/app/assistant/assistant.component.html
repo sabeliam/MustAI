@@ -1,11 +1,12 @@
-<tui-input [formControl]="input" class="tui-space_vertical-5">
+<tui-input (keydown.enter)="submit()" [formControl]="input" class="tui-space_vertical-5">
     Введи что хочешь
 </tui-input>
 
-<button (click)="submit()" tuiButton>Отправить</button>
+<button (click)="submit()" [showLoader]="isLoading" tuiButton>Отправить</button>
 
-<tui-loader [showLoader]="isLoading">
-    <div *ngIf="answer$ | async as answers">
+<!--<tui-loader [showLoader]="isLoading">-->
+<ng-container *ngIf="answer$ | async as answers">
+    <div *ngIf="answers.length">
         <h3 class="tui-text_h3">Ответы</h3>
 
         <!--        <div *ngFor="let choice of answer.choices">-->
@@ -27,7 +28,9 @@
         </div>
 
     </div>
-</tui-loader>
+</ng-container>
+
+<!--</tui-loader>-->
 
 
 <ng-template #dialog let-context let-data="data">

@@ -1,54 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
-import { TuiDialogContext, TuiDialogService } from '@taiga-ui/core';
-import { BaseItem } from '@models/base-item';
-import { map, Observable, of, switchMap } from 'rxjs';
-import { DescriptionService } from '@core/tmdb/description/description.service';
-import { Store } from '@ngxs/store';
-import { AddFilm } from '../../films/films.actions';
-import { Film } from '@models';
-
-interface TMDBFILM {
-    adult: boolean;
-    backdrop_path: string;
-    belongs_to_collection: {
-        backdrop_path: string;
-        name: string;
-        id: number;
-        poster_path: string;
-    };
-    budget: number;
-    genres: { name: string; id: number }[];
-    homepage: string;
-    id: number;
-    imdb_id: string;
-    original_language: string;
-    original_title: string;
-    overview: string;
-    popularity: number;
-    poster_path: string;
-    production_companies: {
-        logo_path: string | null;
-        name: string;
-        id: number;
-        origin_country: string;
-    }[];
-    production_countries: { iso_3166_1: string; name: string }[];
-    release_date: string;
-    revenue: number;
-    runtime: number;
-    spoken_languages: {
-        name: string;
-        iso_639_1: string;
-        english_name: string;
-    }[];
-    status: string;
-    tagline: string;
-    title: string;
-    video: boolean;
-    vote_average: number;
-    vote_count: number;
-}
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {PolymorpheusContent} from '@tinkoff/ng-polymorpheus';
+import {
+    TuiAlertService,
+    TuiDialogContext,
+    TuiDialogService,
+} from '@taiga-ui/core';
+import {BaseItem} from '@models/base-item';
+import {map, Observable, of, switchMap} from 'rxjs';
+import {TmdbClient} from '@core/description/tmdb/tmdb-client.service';
+import {Store} from '@ngxs/store';
+import {AddFilm} from '../../films/films.actions';
+import {Film} from '@models';
+import {TmdbMovie, TmdbTv} from '@models/tmdb';
+import {DescriptionService} from '@core/description/description.service';
 
 @Component({
     selector: 'app-assistant-answer',
@@ -57,28 +21,30 @@ interface TMDBFILM {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssistantAnswerComponent {
-    @Input() answer!: any;
+    @Input() answer!: string;
 
     openSideBar = false;
 
     constructor(
         private readonly descriptionService: DescriptionService,
         private readonly dialogService: TuiDialogService,
+        private readonly tuiAlertService: TuiAlertService,
         private readonly store: Store
-    ) {}
+    ) {
+    }
 
     toggle(open: boolean) {
         this.openSideBar = open;
     }
 
-    getDescription(text: string): Observable<TMDBFILM | null> {
+    getDescription(text: string): Observable<TmdbMovie | TmdbTv | null> {
         const id = this.extractId(text);
 
         if (!id) {
             return of(null);
         }
 
-        return this.descriptionService.getDescription(id);
+        return this.descriptionService.findFilmByImdbId(id);
     }
 
     extractId(string: string): string | null {
@@ -87,7 +53,11 @@ export class AssistantAnswerComponent {
         return array && array[0];
     }
 
-    getImgUrl(poster_path: string) {
+    getImgUrl(poster_path: string | null): string | null {
+        if (!poster_path) {
+            return null
+        }
+
         return `https://image.tmdb.org/t/p/w500/${poster_path}`;
     }
 
@@ -105,18 +75,23 @@ export class AssistantAnswerComponent {
     }
 
     //
-    getItem(object: TMDBFILM): Film {
+    getItem(object: TmdbMovie | TmdbTv): Film {
         return {
             id: String(object.id),
             name: object.title,
             description: object.overview,
+            imgUrl: this.getImgUrl(object.poster_path),
         };
     }
 
     addFilm() {
         this.getDescription(this.answer).subscribe((value) => {
             if (value) {
-                this.store.dispatch(new AddFilm(this.getItem(value)));
+                this.store
+                    .dispatch(new AddFilm(this.getItem(value)))
+                    .subscribe(() =>
+                        this.tuiAlertService.open('Добавлено').subscribe()
+                    );
             }
         });
     }

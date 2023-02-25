@@ -1,14 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CompletionService } from '@core/services/completion/completion.service';
+import { CompletionService } from '@core/completion/opeai/completion.service';
 import { BehaviorSubject, from, map, Subject, switchMap } from 'rxjs';
 import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { TuiSwipeService } from '@taiga-ui/cdk';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [TuiSwipeService],
 })
 export class AppComponent {
     title = 'MustAI';

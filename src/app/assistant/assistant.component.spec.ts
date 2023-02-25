@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AssistantComponent } from './assistant.component';
-import { CompletionService } from '@core/services/completion/completion.service';
-import { MockCompletionService } from '@core/services/completion/completion.mock.service';
-import { DescriptionService } from '@core/tmdb/description/description.service';
+import { CompletionService } from '@core/completion/opeai/completion.service';
+import { MockCompletionService } from '@core/completion/opeai/completion.mock.service';
+import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
 import { mock } from 'ts-mockito';
 
 describe('AssistantComponent', () => {
     let component: AssistantComponent;
     let fixture: ComponentFixture<AssistantComponent>;
-    let descriptionServiceMock: DescriptionService;
+    let descriptionServiceMock: TmdbClient;
 
     beforeEach(async () => {
-        descriptionServiceMock = mock(DescriptionService);
+        descriptionServiceMock = mock(TmdbClient);
 
         await TestBed.configureTestingModule({
             declarations: [AssistantComponent],
@@ -22,7 +22,7 @@ describe('AssistantComponent', () => {
                     useValue: MockCompletionService,
                 },
                 {
-                    provide: DescriptionService,
+                    provide: TmdbClient,
                     useValue: descriptionServiceMock,
                 },
             ],

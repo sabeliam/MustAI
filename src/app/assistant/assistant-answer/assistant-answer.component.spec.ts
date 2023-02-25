@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AssistantAnswerComponent } from './assistant-answer.component';
-import { DescriptionService } from '@core/tmdb/description/description.service';
+import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
 import { mock } from 'ts-mockito';
 import { NgxsModule } from '@ngxs/store';
 import { FilmsState } from '../../films/films.state';
+import { DescriptionService } from '@core/description/description.service';
 
 describe('AssistantAnswerComponent', () => {
     let component: AssistantAnswerComponent;

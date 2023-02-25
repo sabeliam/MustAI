@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CompletionService } from '../core/services/completion/completion.service';
+import { CompletionService } from '@core/completion/opeai/completion.service';
 import {
     TuiAlertService,
     TuiDialogContext,
@@ -19,7 +19,7 @@ import {
     Subject,
     switchMap,
 } from 'rxjs';
-import { DescriptionService } from '@core/tmdb/description/description.service';
+import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
 import { Film } from '@models';
 import { BaseItem } from '@models/base-item';
 import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
@@ -38,7 +38,7 @@ export class AssistantComponent {
 
     constructor(
         private readonly openaiService: CompletionService,
-        private readonly descriptionService: DescriptionService,
+        private readonly descriptionService: TmdbClient,
         private readonly dialogService: TuiDialogService
     ) {}
 

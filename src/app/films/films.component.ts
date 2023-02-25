@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { Film } from '@models';
 import { AddFilm, RemoveFilm } from './films.actions';
 import { mockFilm } from '../../mocks/film';
-import { DescriptionService } from '@core/tmdb/description/description.service';
+import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-films',
@@ -14,9 +15,14 @@ import { DescriptionService } from '@core/tmdb/description/description.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilmsComponent {
+    input = new FormControl<string>('');
+
     @Select(FilmsState.filmList) public filmList$: Observable<Film[]>;
 
-    constructor(private readonly store: Store) {}
+    constructor(
+        private readonly store: Store,
+        private readonly descriptionsService: TmdbClient
+    ) {}
 
     addFilm(): void {
         this.store.dispatch(new AddFilm(mockFilm()));
@@ -26,5 +32,13 @@ export class FilmsComponent {
         this.store.dispatch(new RemoveFilm(id));
     }
 
-    getDescription() {}
+    getDescription() {
+        if (!this.input.value) {
+            return;
+        }
+
+        this.descriptionsService
+            .findFilmByName(this.input.value)
+            .subscribe(console.log);
+    }
 }
