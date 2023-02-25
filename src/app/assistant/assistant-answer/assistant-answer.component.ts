@@ -13,6 +13,7 @@ import { AddFilm } from '../../films/films.actions';
 import { Film } from '@models';
 import { TmdbMovie, TmdbTv } from '@models/tmdb';
 import { DescriptionService } from '@core/description/description.service';
+import { TuiSheetService } from '@taiga-ui/addon-mobile';
 
 @Component({
     selector: 'app-assistant-answer',
@@ -27,7 +28,7 @@ export class AssistantAnswerComponent {
 
     constructor(
         private readonly descriptionService: DescriptionService,
-        private readonly dialogService: TuiDialogService,
+        private readonly tuiSheetService: TuiSheetService,
         private readonly tuiAlertService: TuiAlertService,
         private readonly store: Store
     ) {}
@@ -64,8 +65,8 @@ export class AssistantAnswerComponent {
         this.getDescription(this.answer)
             .pipe(
                 switchMap((value) => {
-                    return this.dialogService.open(content, {
-                        data: value,
+                    return this.tuiSheetService.open(content, {
+                        data: value as any,
                         closeable: true,
                     });
                 })

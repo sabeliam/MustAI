@@ -1,6 +1,6 @@
 {
     "name": "must-ai",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "scripts": {
         "ng": "ng",
         "start": "npm run config -- --environment=dev && ng serve",

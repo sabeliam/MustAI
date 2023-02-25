@@ -31,6 +31,7 @@ import { CompletionModule } from '@core/completion/completion.module';
 import { NAVIGATION_ITEMS } from './header/navigation/navigation.providers';
 import { TuiDocHeaderModule } from './header/header.module';
 import { TuiSwipeService } from '@taiga-ui/cdk';
+import { TuiSheetModule } from '@taiga-ui/addon-mobile';
 
 @NgModule({
     declarations: [AppComponent],
@@ -40,6 +41,7 @@ import { TuiSwipeService } from '@taiga-ui/cdk';
         BrowserAnimationsModule,
         TuiRootModule,
         TuiDialogModule,
+        TuiSheetModule,
         TuiAlertModule,
         TuiInputModule,
         ReactiveFormsModule,

@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CompletionService } from '@core/completion/opeai/completion.service';
 import { BehaviorSubject, from, map, Subject, switchMap } from 'rxjs';
 import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
 import { TuiSwipeService } from '@taiga-ui/cdk';
+import { ENVIRONMENT } from '@core/environment/environment';
+import { Environment } from '@models';
 
 @Component({
     selector: 'app-root',
@@ -14,10 +16,12 @@ import { TuiSwipeService } from '@taiga-ui/cdk';
 })
 export class AppComponent {
     title = 'MustAI';
+    appVersion = this.env.appVersion;
 
     constructor(
         private readonly openaiService: CompletionService,
-        private readonly tuiAlertService: TuiAlertService
+        private readonly tuiAlertService: TuiAlertService,
+        @Inject(ENVIRONMENT) private readonly env: Environment
     ) {}
 
     getMicrophone() {

@@ -24,6 +24,7 @@ import { Film } from '@models';
 import { BaseItem } from '@models/base-item';
 import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
 import { tuiFadeInList } from './animation';
+import { TuiSheetService } from '@taiga-ui/addon-mobile';
 
 @Component({
     selector: 'app-assistant',
@@ -41,7 +42,7 @@ export class AssistantComponent {
     constructor(
         private readonly openaiService: CompletionService,
         private readonly descriptionService: TmdbClient,
-        private readonly dialogService: TuiDialogService
+        private readonly tuiSheetService: TuiSheetService
     ) {}
 
     submit() {
