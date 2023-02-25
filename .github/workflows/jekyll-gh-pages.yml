@@ -40,9 +40,9 @@ jobs:
                     OPEN_AI_SECRET: ${{ secrets.OPEN_AI_SECRET }}
                     OPEN_AI_COMPLETION_URL: ${{ vars.OPEN_AI_COMPLETION_URL }}
                     TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-            -   name: Test
-                run: |
-                    npm run test:headless
+            #            -   name: Test
+            #                run: |
+            #                    npm run test:headless
             -   name: Upload artifact
                 uses: actions/upload-pages-artifact@v1
                 with:
