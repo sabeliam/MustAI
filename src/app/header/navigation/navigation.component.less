@@ -9,6 +9,21 @@
     background: var(--tui-base-01);
 }
 
+.item {
+    .clearbtn();
+    display: flex;
+    align-items: center;
+    font: var(--tui-font-text-m);
+    color: var(--tui-text-01);
+    min-height: var(--tui-height-m);
+    padding: 0.625rem 0.75rem 0.625rem 1rem;
+
+
+    &_active {
+        background: var(--tui-clear);
+    }
+}
+
 .t-input {
     display: block;
     margin: 1.25rem;

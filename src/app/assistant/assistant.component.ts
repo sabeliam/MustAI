@@ -23,12 +23,14 @@ import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
 import { Film } from '@models';
 import { BaseItem } from '@models/base-item';
 import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
+import { tuiFadeInList } from './animation';
 
 @Component({
     selector: 'app-assistant',
     templateUrl: './assistant.component.html',
     styleUrls: ['./assistant.component.less'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [tuiFadeInList],
 })
 export class AssistantComponent {
     input = new FormControl<string>('');

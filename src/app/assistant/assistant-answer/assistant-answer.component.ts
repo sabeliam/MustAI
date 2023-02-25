@@ -1,18 +1,18 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {PolymorpheusContent} from '@tinkoff/ng-polymorpheus';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
 import {
     TuiAlertService,
     TuiDialogContext,
     TuiDialogService,
 } from '@taiga-ui/core';
-import {BaseItem} from '@models/base-item';
-import {map, Observable, of, switchMap} from 'rxjs';
-import {TmdbClient} from '@core/description/tmdb/tmdb-client.service';
-import {Store} from '@ngxs/store';
-import {AddFilm} from '../../films/films.actions';
-import {Film} from '@models';
-import {TmdbMovie, TmdbTv} from '@models/tmdb';
-import {DescriptionService} from '@core/description/description.service';
+import { BaseItem } from '@models/base-item';
+import { map, Observable, of, switchMap } from 'rxjs';
+import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
+import { Store } from '@ngxs/store';
+import { AddFilm } from '../../films/films.actions';
+import { Film } from '@models';
+import { TmdbMovie, TmdbTv } from '@models/tmdb';
+import { DescriptionService } from '@core/description/description.service';
 
 @Component({
     selector: 'app-assistant-answer',
@@ -30,8 +30,7 @@ export class AssistantAnswerComponent {
         private readonly dialogService: TuiDialogService,
         private readonly tuiAlertService: TuiAlertService,
         private readonly store: Store
-    ) {
-    }
+    ) {}
 
     toggle(open: boolean) {
         this.openSideBar = open;
@@ -55,7 +54,7 @@ export class AssistantAnswerComponent {
 
     getImgUrl(poster_path: string | null): string | null {
         if (!poster_path) {
-            return null
+            return null;
         }
 
         return `https://image.tmdb.org/t/p/w500/${poster_path}`;

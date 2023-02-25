@@ -15,12 +15,11 @@
 <!--    </div>-->
 <!--</button>-->
 
-<button (click)="addFilm()" apperance="secondary" size="m" tuiButton>
-    Добавить
+<button (click)="addFilm()" appearance="icon" icon="tuiIconPlusCircleLarge" size="m" tuiIconButton>
 </button>
 
-<button (click)="showDialog(card)" apperance="secondary" size="m" tuiButton>
-    Подробнее
+<button (click)="showDialog(card)" appearance="icon" icon="tuiIconInfoLarge" size="m" tuiIconButton>
+
 </button>
 
 <ng-template #card let-film="data">
