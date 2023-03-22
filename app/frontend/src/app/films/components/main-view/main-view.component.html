@@ -1,0 +1,77 @@
+<div class="tui-container tui-container_adaptive">
+    <h2 class="tui-text_h3 tui-space_vertical-5">Список фильмов</h2>
+
+
+    <tui-hosted-dropdown
+        #dropdown
+        [(open)]="dropdownOpen"
+        [content]="content"
+    >
+        <button
+            [icon]="(viewType$ | async)?.icon"
+            [pseudoHover]="dropdown.open || null"
+            appearance="flat"
+            tuiIconButton
+            type="button"
+        ></button>
+    </tui-hosted-dropdown>
+
+    <ng-template
+        #content
+        let-activeZone
+    >
+        <tui-data-list
+            [tuiActiveZoneParent]="activeZone"
+            size="m"
+            tuiDataListDropdownManager
+        >
+            <button
+                (click)="selectViewType(item)"
+                *ngFor="let item of items"
+                tuiOption
+            >
+                <!--            <tui-svg [src]="item.icon"></tui-svg>-->
+                <span>{{item.label}}</span>
+            </button>
+        </tui-data-list>
+    </ng-template>
+
+    <ng-container [ngSwitch]="(viewType$ | async)?.value">
+        <ng-container *ngSwitchCase="viewType.Cards">
+            <ng-container *ngTemplateOutlet="cardsView"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="viewType.List">
+            <ng-container *ngTemplateOutlet="listView"></ng-container>
+        </ng-container>
+    </ng-container>
+</div>
+
+<ng-template #cardsView>
+    <div class="cards">
+        <app-card
+            (cardClick)="goToDetailed(film.id)"
+            (delete)="removeFilm(film.id)"
+            *ngFor="let film of (filmList$ | async)"
+            [category]="'Фильм'"
+            [item]="film"
+            class="cards__card"
+        >
+        </app-card>
+    </div>
+</ng-template>
+
+<ng-template #listView>
+    <ul class="list">
+        <li (click)="goToDetailed(film.id)" *ngFor="let film of (filmList$ | async)" class="list__item">
+            {{film.name}}
+
+            <button
+                (click)="removeFilm(film.id, $event)"
+                appearance="icon"
+                icon="tuiIconTrashLarge"
+                size="m"
+                tuiIconButton
+            ></button>
+        </li>
+    </ul>
+</ng-template>

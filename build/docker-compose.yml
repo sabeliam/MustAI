@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    mongo:
+        container_name: mustai-mongo
+        image: docker-proxy.artifactory.tcsbank.ru/mongo:4
+        ports:
+            - 27019:27017
+
+    api:
+        container_name: api
+        build:
+            context: ../
+            dockerfile: ./build/docker/web.run.dockerfile
+            args:
+                - BUILD_NUMBER=dev-docker
+        image: wof-knowledge-base/wof-knowledge-base-api:dev-docker
+        environment:
+            - WOF_AppVersion=local-in-docker
+        env_file: ./api.env
+        ports:
+            - 10110:10110

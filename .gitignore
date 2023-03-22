@@ -1,15 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 #env
-/src/environments/*
-!/src/environments/.gitkeep
-
-# compiled output
-/dist
-/tmp
-/out-tsc
-# Only exists if Bazel was run
-/bazel-out
+app/frontend/src/environments/*
+!app/frontend/src/environments/.gitkeep
 
 # dependencies
 /node_modules

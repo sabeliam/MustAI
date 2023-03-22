@@ -1,0 +1,105 @@
+{
+  "films": [
+    {
+      "id": "155",
+      "name": "The Dark Knight",
+      "description": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "imdb_id": "tt0468569",
+      "comments": []
+    },
+    {
+      "id": "680",
+      "name": "Pulp Fiction",
+      "description": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
+      "imdb_id": "tt0110912",
+      "comments": []
+    },
+    {
+      "id": "18785",
+      "name": "The Hangover",
+      "description": "When three friends finally come to after a raucous night of bachelor-party revelry, they find a baby in the closet and a tiger in the bathroom. But they can't seem to locate their best friend, Doug – who's supposed to be tying the knot. Launching a frantic search for Doug, the trio perseveres through a nasty hangover to try to make it to the church on time.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500/uluhlXubGu1VxU63X9VHCLWDAYP.jpg",
+      "imdb_id": "tt1119646",
+      "comments": []
+    },
+    {
+      "id": "8699",
+      "name": "Anchorman: The Legend of Ron Burgundy",
+      "description": "It's the 1970s and San Diego anchorman Ron Burgundy is the top dog in local TV, but that's all about to change when ambitious reporter Veronica Corningstone arrives as a new employee at his station.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500/Rdzsh3s6waplhSD7PUaBJovB7v.jpg",
+      "imdb_id": "tt0357413",
+      "comments": []
+    },
+    {
+      "id": "11020",
+      "name": "Picnic at Hanging Rock",
+      "description": "In the early 1900s, Miranda attends a girls boarding school in Australia. One Valentine's Day, the school's typically strict headmistress treats the girls to a picnic field trip to an unusual but scenic volcanic formation called Hanging Rock. Despite rules against it, Miranda and several other girls venture off. It's not until the end of the day that the faculty realizes the girls and one of the teachers have disappeared mysteriously.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500//7BAXwmFN4pZDNb9N6kzmAAwdssi.jpg",
+      "imdb_id": "tt0073540",
+      "comments": []
+    },
+    {
+      "id": "435129",
+      "name": "The Breadwinner",
+      "description": "A headstrong young girl in Afghanistan, ruled by the Taliban, disguises herself as a boy in order to provide for her family.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500//2d6qmkJz9AWqmk9wBWtd2uFX89t.jpg",
+      "imdb_id": "tt3901826",
+      "comments": [
+        {
+          "author": "Bob",
+          "comment": "фильм про девочку которую заставляли жить как мальчик ",
+          "date": "2023-03-14T20:11:55.035Z",
+          "filmId": "435129",
+          "id": "2e48a483-8d2b-4129-a8f9-0d7b8cc90be7"
+        }
+      ]
+    },
+    {
+      "id": "947",
+      "name": "Lawrence of Arabia",
+      "description": "The story of British officer T.E. Lawrence's mission to aid the Arab tribes in their revolt against the Ottoman Empire during the First World War. Lawrence becomes a flamboyant, messianic figure in the cause of Arab unity but his psychological instability threatens to undermine his achievements.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500//AiAm0EtDvyGqNpVoieRw4u65vD1.jpg",
+      "imdb_id": "tt0056172",
+      "comments": [
+        {
+          "author": "Bob",
+          "comment": "asfag",
+          "date": "2023-03-14T19:02:10.777Z",
+          "filmId": "947",
+          "id": "093dd6d4-dc45-4c7d-84df-5d57f13b4e04"
+        },
+        {
+          "author": "Bob",
+          "comment": "лучший фильм",
+          "date": "2023-03-14T20:05:36.060Z",
+          "filmId": "947",
+          "id": "55a5a45a-64e0-440e-9749-c639c1781c6c"
+        }
+      ]
+    },
+    {
+      "id": "9998",
+      "name": "Forbidden Warrior",
+      "description": "The Gaia Za is a sacred tome that holds many ancient and powerful spells to be unlocked by a so-called Chosen One expected to be born to one of two leading families: the Khans or the Marajis. Unwilling to leave the clan's fate to the gods, Che Khan decides to take matters into his own hands by plotting the murder of a new Maraji baby, who may be the child in question. In doing so, he sets off a furious clash.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500//dMgvshgcbmIx1h1IYZS9tdC86ph.jpg",
+      "comments": []
+    },
+    {
+      "id": "16859",
+      "name": "Kiki's Delivery Service",
+      "description": "A young witch, on her mandatory year of independent life, finds fitting into a new community difficult while she supports herself by running an air courier service.",
+      "imgUrl": "https://image.tmdb.org/t/p/w500//Aufa4YdZIv4AXpR9rznwVA5SEfd.jpg",
+      "comments": [
+        {
+          "author": "Bob",
+          "comment": "Привет",
+          "date": "2023-03-22T06:52:04.068Z",
+          "filmId": "16859",
+          "id": "1bd487ab-f272-4f90-816e-650b4444dc33"
+        }
+      ]
+    }
+  ]
+}

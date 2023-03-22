@@ -1,0 +1,50 @@
+<!--<pre>-->
+<!--    {{film$ | async | json}}-->
+<!--</pre>-->
+<div class="tui-container tui-container_adaptive">
+    <ng-container *ngIf="film$ | async as film">
+        <div *ngIf="film.imgUrl && getImgUrl(film.imgUrl)" class="poster">
+            <img [src]="getImgUrl(film.imgUrl)" alt="img" class="responsive">
+        </div>
+
+        <h3 class="tui-text_h3 tui-space_bottom-4">{{ film.name }}</h3>
+        <div class="container">
+
+            <div class="tui-text_body-m">
+                {{ film.description }}
+            </div>
+        </div>
+
+
+        <h5 class="tui-text_h5 tui-space_vertical-4">Коммментарии</h5>
+
+        <ul @fadeInList [@.disabled]="animationDisabled" class="comments">
+            <li *ngFor="let comment of (film$ | async)?.comments" class="comment">
+                <button
+                    (click)="deleteComment(comment.id)"
+                    appearance="icon"
+                    class="comment__delete"
+                    icon="tuiIconTrash"
+                    size="s"
+                    tuiIconButton
+                ></button>
+
+                <p class="comment__text">{{comment.comment}}</p>
+                <div class="comment__footer">
+                    <span>{{comment.author}}</span>
+                    ·
+                    <span>{{comment.date | tuiFormatDate | async}}</span>
+                </div>
+            </li>
+        </ul>
+
+
+        <tui-text-area (keydown.enter)="addComment()" [formControl]="input" [rows]="3" class="tui-space_vertical-5">
+            Введи что хочешь
+        </tui-text-area>
+
+        <button (click)="addComment()" tuiButton>Отправить</button>
+    </ng-container>
+</div>
+
+

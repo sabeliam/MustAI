@@ -1,0 +1,35 @@
+@import "@taiga-ui/core/styles/taiga-ui-local";
+
+:host {
+    display: block;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.list {
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid black;
+        border-radius: 16px;
+        padding: 8px;
+
+        &:not(:first-child) {
+            margin-top: .5rem;
+        }
+    }
+}
+
+@media @tui-mobile {
+    .cards {
+        grid-template-columns: 1fr;
+        padding: 1rem 0;
+    }
+}

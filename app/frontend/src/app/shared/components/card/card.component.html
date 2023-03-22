@@ -1,0 +1,23 @@
+<tui-island [hoverable]="false">
+    <div class="tui-island__content">
+        <div class="tui-island__close">
+            <button
+                (click)="delete.emit(item)"
+                appearance="icon"
+                icon="tuiIconTrashLarge"
+                size="m"
+                tuiIconButton
+            ></button>
+        </div>
+    </div>
+    <p *ngIf="category" class="tui-island__category">{{ category }}</p>
+    <h3 class="tui-island__title">{{ item.name }}</h3>
+    <div class="container">
+        <img *ngIf="item.imgUrl" [src]="item.imgUrl" alt="img">
+        <div class="tui-island__paragraph">
+            {{ item.description }}
+        </div>
+    </div>
+
+    <button (click)="cardClick.emit(item)" tuiButton>Подробнее</button>
+</tui-island>

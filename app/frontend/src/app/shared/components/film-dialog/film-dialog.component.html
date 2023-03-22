@@ -1,0 +1,18 @@
+<div class="tui-island__content">
+    <!--    <p *ngIf="film.adult" class="tui-island__category">Для взрослых</p>-->
+    <img *ngIf="film.imgUrl" [src]="film.imgUrl" alt="img">
+    <h3 class="tui-text_h3 tui-space_vertical-2">{{ film.name }}</h3>
+
+    <ng-container *ngIf="film.release_date || film.first_air_date">
+        <h6 class="tui-text_h6 tui-space_vertical-1">Дата выхода</h6>
+        <div class="tui-island__paragraph">
+            {{ film.release_date || film.first_air_date }}
+        </div>
+    </ng-container>
+
+
+    <h6 class="tui-text_h6 tui-space_vertical-1">Описание</h6>
+    <div class="tui-island__paragraph">
+        {{ film.description }}
+    </div>
+</div>
