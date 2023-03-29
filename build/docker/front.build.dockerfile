@@ -13,4 +13,4 @@ RUN npm ci
 # Копирование остальных файлов
 COPY ./app/frontend .
 
-RUN npm run build:prod
+RUN npm run build:ci

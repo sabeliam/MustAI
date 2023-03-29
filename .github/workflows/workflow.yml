@@ -50,7 +50,7 @@ jobs:
             -   name: Build and save Docker images
                 run: |
                     docker build --tag $DOCKER_IMAGE_BACK --file build/docker/back.build.dockerfile .
-                    - docker save $DOCKER_IMAGE_BACK > ${DOCKER_IMAGE_BACK.tar
+                    - docker save $DOCKER_IMAGE_BACK > $DOCKER_IMAGE_BACK.tar
 
             -   name: Upload artifacts
                 uses: actions/upload-artifact@v2
