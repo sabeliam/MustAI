@@ -1,0 +1,17 @@
+<div *ngIf="getImg(searchResult.poster_path)" class="poster">
+    <img [src]="getImg(searchResult.poster_path)" alt="img" class="responsive">
+</div>
+
+<div class="answer-text">
+    {{searchResult.original_title}}
+</div>
+
+<button (click)="onAddClick($event)" appearance="flat" icon="tuiIconPlusCircleLarge" size="m" tuiIconButton>
+</button>
+
+
+<!--<button (click)="showDialog()" appearance="icon" icon="tuiIconInfoLarge" size="m" tuiIconButton>-->
+<!--</button>-->
+
+<!--    <button (click)="context.complete()"></button>-->
+

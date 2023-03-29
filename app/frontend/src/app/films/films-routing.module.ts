@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { MainViewComponent } from './components/main-view/main-view.component';
-import { DetailedViewComponent } from './components/detailed-view/detailed-view.component';
-import { FilmsComponent } from './films.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {MainViewComponent} from './pages/main-view/main-view.component';
+import {DetailedViewComponent} from './pages/detailed-view/detailed-view.component';
+import {FilmsComponent} from './films.component';
 
 const routes: Routes = [
     {
@@ -12,12 +12,12 @@ const routes: Routes = [
             {
                 path: 'main',
                 component: MainViewComponent,
-                data: { animation: 'Home' },
+                data: {animation: 'Home'},
             },
             {
                 path: 'detailed/:id',
                 component: DetailedViewComponent,
-                data: { animation: 'Article' },
+                data: {animation: 'Article'},
             },
             {
                 path: '',
@@ -32,4 +32,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class FilmsRoutingModule {}
+export class FilmsRoutingModule {
+}

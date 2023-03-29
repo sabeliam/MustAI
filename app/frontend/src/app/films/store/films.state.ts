@@ -1,20 +1,22 @@
-import { Injectable } from '@angular/core';
-import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
-import { Film } from '@models';
-import { Comment } from '@models/comment';
+import {Injectable} from '@angular/core';
+import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
+import {Film} from '@models';
+import {Comment} from '@models/comment';
 import {
     AddComment,
-    AddFilm,
+    AddFilm, ClearStore,
     GetComments,
     GetFilms,
     RemoveComment,
-    RemoveFilm,
+    RemoveFilm, UpdateComment,
     UpdateFilm,
 } from './films.actions';
-import { FilmsService } from '../services/films.service';
-import { tap } from 'rxjs';
-import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
-import { patch, updateItem } from '@ngxs/store/operators';
+import {FilmsService} from '../services/films.service';
+import {tap} from 'rxjs';
+import {TuiAlertService, TuiNotification} from '@taiga-ui/core';
+import {patch, updateItem} from '@ngxs/store/operators';
+import {v4 as uuidv4} from 'uuid';
+import {AuthService} from '@core/auth/auth.service';
 
 interface FilmsStateModel {
     films: Film[];
@@ -29,11 +31,13 @@ const defaultFilmsState: FilmsStateModel = {
     defaults: defaultFilmsState,
 })
 @Injectable()
-export class FilmsState implements NgxsOnInit {
+export class FilmsState {
     constructor(
         private readonly filmsService: FilmsService,
-        private readonly tuiAlertService: TuiAlertService
-    ) {}
+        private readonly tuiAlertService: TuiAlertService,
+        private readonly authService: AuthService
+    ) {
+    }
 
     @Selector()
     public static filmList(state: FilmsStateModel): Film[] {
@@ -49,9 +53,9 @@ export class FilmsState implements NgxsOnInit {
         };
     }
 
-    ngxsOnInit(ctx: StateContext<FilmsStateModel>) {
-        console.log('State initialized, now getting films');
-        ctx.dispatch(new GetFilms());
+    @Action(ClearStore)
+    clearStore({setState}: StateContext<FilmsStateModel>) {
+        setState(defaultFilmsState)
     }
 
     @Action(GetFilms)
@@ -72,8 +76,23 @@ export class FilmsState implements NgxsOnInit {
         return this.filmsService.getComments(action.filmId);
     }
 
-    @Action(AddComment)
-    addComment(ctx: StateContext<FilmsStateModel>, action: AddComment) {
+    // @Action(AddComment)
+    // addComment(ctx: StateContext<FilmsStateModel>, action: AddComment) {
+    //     const film = ctx
+    //         .getState()
+    //         .films.find((film) => film.id === action.filmId);
+    //
+    //     if (!film) {
+    //         return;
+    //     }
+    //
+    //     film.comments.push(action.comment);
+    //
+    //     ctx.dispatch(new UpdateFilm(film));
+    // }
+
+    @Action(UpdateComment)
+    updateComment(ctx: StateContext<FilmsStateModel>, action: UpdateComment) {
         const film = ctx
             .getState()
             .films.find((film) => film.id === action.filmId);
@@ -82,7 +101,22 @@ export class FilmsState implements NgxsOnInit {
             return;
         }
 
-        film.comments.push(action.comment);
+        let comment: Comment = film.comments[0];
+
+        if (!comment) {
+            comment = {
+                id: uuidv4(),
+                comment: action.comment,
+                author: this.authService.currentUserUsername,
+                date: new Date(),
+                filmId: action.filmId
+            }
+
+            film.comments.push(comment);
+        } else {
+            comment.comment = action.comment;
+            comment.date = new Date();
+        }
 
         ctx.dispatch(new UpdateFilm(film));
     }
@@ -132,7 +166,7 @@ export class FilmsState implements NgxsOnInit {
                     patch({
                         films: updateItem<Partial<Film>>(
                             (item) => item?.id === action.film.id,
-                            patch({ ...action.film })
+                            patch({...action.film})
                         ),
                     })
                 );

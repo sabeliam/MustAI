@@ -1,0 +1,53 @@
+<app-header>
+    <div>
+        <h3 class="tui-text_h3 tui-space_left-2">MustAI</h3>
+    </div>
+
+    <div class="user">
+        <tui-hosted-dropdown [(open)]="opened" [content]="dropdown">
+            <!--            <tui-svg-->
+            <!--                *ngIf="(showDefaultUserImage$ | async); else profileImageUri"-->
+            <!--                class="tui-space_top-1 default-user-image"-->
+            <!--                src="assets/images/user-male.svg"-->
+            <!--            ></tui-svg>-->
+            <div class="user__button">
+                <div class="tui-space_right-2 tui-text">{{(user$ | async)?.username}}</div>
+                <tui-svg
+                    class="default-user-image"
+                    src="assets/icons/profile.svg"
+                ></tui-svg>
+            </div>
+        </tui-hosted-dropdown>
+    </div>
+
+</app-header>
+
+<router-outlet></router-outlet>
+
+<!--<ng-template #profileImageUri>-->
+<!--    <ng-container *ngIf="userInfo$ | async as userInfo">-->
+<!--        <tui-avatar-->
+<!--            [avatarUrl]="userInfo.profileImageUri"-->
+<!--            [text]="userInfo.userName"-->
+<!--            size="s"-->
+<!--        ></tui-avatar>-->
+<!--    </ng-container>-->
+<!--</ng-template>-->
+
+
+<ng-template #dropdown>
+    <tui-data-list>
+        <tui-opt-group>
+            <button
+                (click)="logout()"
+                tuiOption
+            >
+                Выйти
+                <tui-svg
+                    class="tui-space_left-2"
+                    src="tuiIconLogoutLarge"
+                ></tui-svg>
+            </button>
+        </tui-opt-group>
+    </tui-data-list>
+</ng-template>

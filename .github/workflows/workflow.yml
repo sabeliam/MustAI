@@ -1,0 +1,60 @@
+name: Deploy
+
+variables:
+    DOCKER_IMAGE_BACK: mustai-back
+    DOCKER_IMAGE_FRONT: mustai-front
+
+on:
+    # Runs on pushes targeting the default branch
+    push:
+        branches: [ "main" ]
+
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+    group: "pages"
+    cancel-in-progress: true
+
+jobs:
+    build-front:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v2
+
+            -   name: Build and save Docker images
+                run: |
+                    docker build --tag ${DOCKER_IMAGE_FRONT} --file build/docker/front.build.dockerfile .
+                    - docker save ${DOCKER_IMAGE_FRONT} > ${DOCKER_IMAGE_FRONT}.tar
+
+            -   name: Upload artifacts
+                uses: actions/upload-artifact@v2
+                with:
+                    name: my-artifacts
+                    path: ${DOCKER_IMAGE_FRONT}.tar
+
+    build-back:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v2
+
+            -   name: Build and save Docker images
+                run: |
+                    docker build --tag ${DOCKER_IMAGE_BACK} --file build/docker/back.build.dockerfile .
+                    - docker save ${DOCKER_IMAGE_BACK} > ${DOCKER_IMAGE_BACK}.tar
+
+            -   name: Upload artifacts
+                uses: actions/upload-artifact@v2
+                with:
+                    name: my-artifacts
+                    path: ${DOCKER_IMAGE_BACK}.tar
+

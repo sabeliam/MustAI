@@ -1,0 +1,62 @@
+@import "@taiga-ui/core/styles/taiga-ui-local";
+
+:host {
+    display: block;
+    height: 100%;
+    overflow: auto;
+}
+
+//.responsive {
+//    width: 100%;
+//    height: auto;
+//}
+
+.poster {
+    .tui-space(vertical, 4);
+    position: relative;
+    height: 330px;
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: auto;
+        height: 330px;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+}
+
+.comment {
+    position: relative;
+    background: var(--tui-clear);
+    border-radius: var(--tui-radius-m);
+    padding: 1rem;
+
+    font: var(--tui-font-text-m);
+
+    &__footer {
+        font: var(--tui-font-text-s);
+        color: var(--tui-text-03);
+        text-align: end;
+    }
+
+    &__delete {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    &:not(:last-child) {
+        .tui-space(bottom, 4);
+    }
+}
+
+@media @tui-mobile {
+    .poster {
+        height: 220px;
+
+        img {
+            height: 220px;
+        }
+    }
+}

@@ -1,0 +1,38 @@
+<div class="tui-container tui-container_adaptive">
+    <form [formGroup]="form">
+
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Аутентификация</h3>
+        <div class="tui-form__row">
+            <tui-input
+                formControlName="username"
+                tuiHintContent="Username"
+            >
+                Username
+                <span class="tui-required"></span>
+            </tui-input>
+            <tui-error
+                [error]="[] | tuiFieldError | async"
+                formControlName="username"
+            ></tui-error>
+        </div>
+        <div class="tui-form__row">
+            <tui-input-password
+                formControlName="password"
+                tuiHintContent="password"
+            >
+                Password
+                <span class="tui-required"></span>
+            </tui-input-password>
+            <tui-error
+                [error]="[] | tuiFieldError | async"
+                formControlName="password"
+            ></tui-error>
+        </div>
+
+        <div class="tui-form__row tui-form__buttons">
+            <button (click)="login()" class="tui-form__button" tuiButton>Логин</button>
+            <button (click)="register()" class="tui-form__button" tuiButton>Регистрация</button>
+        </div>
+    </form>
+</div>
+

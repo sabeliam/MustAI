@@ -39,15 +39,8 @@ export class DescriptionService {
         );
     }
 
-    public findFilmByName(name: string): Observable<SearchResult | null> {
+    public findFilmByName(name: string): Observable<SearchResults> {
         return this.tmdbCleint.findFilmByName(name).pipe(
-            map((value: SearchResults) => {
-                if (value.results.length) {
-                    return value.results[0]
-                }
-
-                return null
-            }),
             catchError((err) => {
                 console.error('error in find film', err);
 
@@ -60,5 +53,17 @@ export class DescriptionService {
                 return throwError(() => new Error(err));
             })
         );
+    }
+
+    public findFirstFilmByName(name: string): Observable<SearchResult | null> {
+        return this.findFilmByName(name).pipe(
+            map((value: SearchResults) => {
+                if (value.results.length) {
+                    return value.results[0]
+                }
+
+                return null
+            }),
+        )
     }
 }

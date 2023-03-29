@@ -1,25 +1,7 @@
 <tui-root>
-    <!--    <div class="tui-container tui-container_adaptive">-->
-    <app-header>
-        <div>
-            <h3 class="tui-text_h3 tui-space_left-2">MustAI</h3>
-        </div>
-        <div class="version">
-            Версия {{appVersion}}
-        </div>
-    </app-header>
-    <!--        <app-assistant></app-assistant>-->
-
-    <!--        <app-films></app-films>-->
-
     <div class="page">
         <router-outlet></router-outlet>
     </div>
 
-    <!--        <div>-->
-    <!--            <h3 class="tui-text_h3">Check media</h3>-->
-    <!--            <button tuiButton (click)="getMicrophone()">Сабмит</button>-->
-    <!--        </div>-->
-    <!--    </div>-->
     <tui-sheets-host ngProjectAs="tuiOverContent"></tui-sheets-host>
 </tui-root>

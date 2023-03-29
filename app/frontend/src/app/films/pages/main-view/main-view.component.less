@@ -1,0 +1,66 @@
+@import "@taiga-ui/core/styles/taiga-ui-local";
+
+:host {
+    display: block;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.list {
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        //border: 1px solid black;
+        //border-radius: 16px;
+        padding: 8px;
+        position: relative;
+
+        &:not(:first-child) {
+            &:before {
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                right: 0;
+                left: 0;
+                display: block;
+                height: 1px;
+                content: "";
+                background: rgba(0, 0, 0, .08);
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+            background: var(--tui-base-02);
+        }
+
+
+        .poster {
+            position: relative;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+
+            img {
+                width: 50px;
+                height: 50px;
+                -o-object-fit: cover;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+@media @tui-mobile {
+    .cards {
+        grid-template-columns: 1fr;
+        padding: 1rem 0;
+    }
+}

@@ -1,0 +1,59 @@
+<!--<tui-input [formControl]="search" class="tui-space_vertical-5">-->
+<!--    Поиск-->
+<!--</tui-input>-->
+
+<!--<tui-loader [showLoader]="isLoading">-->
+<!--<ng-container *ngIf="searchResults$ | async as answers">-->
+<!--    <div *ngIf="answers.length">-->
+<!--        <h3 class="tui-text_h3">Результаты</h3>-->
+<!--        <div @fadeInList class="container">-->
+<!--            <div *ngFor="let searchResult of answers" class="answer">-->
+<!--                <app-search-item (clickAdd)="addFilm(searchResult)" [searchResult]="searchResult"></app-search-item>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</ng-container>-->
+
+
+<tui-hosted-dropdown
+    *tuiLet="searchResults$ | async as searchResults"
+    [(open)]="open"
+    [content]="dropdown"
+    class="t-input"
+    tuiDropdownDirection="top"
+    tuiDropdownLimitWidth="fixed"
+>
+    <tui-primitive-textfield
+        (valueChange)="onSearchChange($event)"
+        [tuiTextfieldCleaner]="true"
+        [tuiTextfieldLabelOutside]="true"
+        [value]="search.value"
+        iconAlign="left"
+        iconContent="tuiIconSearch"
+        tuiTextfieldSize="l"
+    >
+        {{ search.value }}
+        <ng-content></ng-content>
+    </tui-primitive-textfield>
+    <ng-template
+        #dropdown
+        let-activeZone
+    >
+        <tui-data-list>
+            <tui-opt-group
+                *ngFor="let searchResult of searchResults"
+            >
+                <a
+                    tuiOption
+                >
+                    <app-search-item
+                        (click)="openDialog(searchResult)"
+                        (clickAdd)="addFilm(searchResult)"
+                        [searchResult]="searchResult"
+                    ></app-search-item>
+                </a>
+            </tui-opt-group>
+        </tui-data-list>
+    </ng-template>
+</tui-hosted-dropdown>
