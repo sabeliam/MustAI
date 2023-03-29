@@ -1,6 +1,6 @@
 name: Deploy
 
-variables:
+env:
     DOCKER_IMAGE_BACK: mustai-back
     DOCKER_IMAGE_FRONT: mustai-front
 
@@ -32,14 +32,14 @@ jobs:
 
             -   name: Build and save Docker images
                 run: |
-                    docker build --tag ${DOCKER_IMAGE_FRONT} --file build/docker/front.build.dockerfile .
-                    - docker save ${DOCKER_IMAGE_FRONT} > ${DOCKER_IMAGE_FRONT}.tar
+                    docker build --tag $DOCKER_IMAGE_FRONT --file build/docker/front.build.dockerfile .
+                    - docker save $DOCKER_IMAGE_FRONT > $DOCKER_IMAGE_FRONT.tar
 
             -   name: Upload artifacts
                 uses: actions/upload-artifact@v2
                 with:
                     name: my-artifacts
-                    path: ${DOCKER_IMAGE_FRONT}.tar
+                    path: $DOCKER_IMAGE_FRONT.tar
 
     build-back:
         runs-on: ubuntu-latest
@@ -49,8 +49,8 @@ jobs:
 
             -   name: Build and save Docker images
                 run: |
-                    docker build --tag ${DOCKER_IMAGE_BACK} --file build/docker/back.build.dockerfile .
-                    - docker save ${DOCKER_IMAGE_BACK} > ${DOCKER_IMAGE_BACK}.tar
+                    docker build --tag $DOCKER_IMAGE_BACK --file build/docker/back.build.dockerfile .
+                    - docker save $DOCKER_IMAGE_BACK > ${DOCKER_IMAGE_BACK.tar
 
             -   name: Upload artifacts
                 uses: actions/upload-artifact@v2
