@@ -39,7 +39,7 @@ jobs:
                 uses: actions/upload-artifact@v2
                 with:
                     name: my-artifacts
-                    path: $DOCKER_IMAGE_FRONT.tar
+                    path: ${{env.DOCKER_IMAGE_FRONT}}.tar
 
     build-back:
         runs-on: ubuntu-latest
@@ -56,5 +56,5 @@ jobs:
                 uses: actions/upload-artifact@v2
                 with:
                     name: my-artifacts
-                    path: ${DOCKER_IMAGE_BACK}.tar
+                    path: ${{env.DOCKER_IMAGE_BACK}}.tar
 
