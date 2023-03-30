@@ -1,5 +1,5 @@
 # Используем Node.js в качестве базового образа
-FROM node:18
+FROM node:18 AS builder
 WORKDIR /app
 
 # Для поддержи кэширования шагов вначале в образ копируются наименее изменяемые файлы.
@@ -14,3 +14,8 @@ RUN npm ci
 COPY ./app/backend .
 
 RUN npm run build
+
+FROM alpine:latest
+WORKDIR /app
+
+COPY --from=builder /app/dist /dist

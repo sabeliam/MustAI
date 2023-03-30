@@ -1,6 +1,6 @@
 # Используем Node.js в качестве базового образа
-FROM node:18
-WORKDIR /src
+FROM node:18 AS builder
+WORKDIR /app
 
 # Для поддержи кэширования шагов вначале в образ копируются наименее изменяемые файлы.
 # Это позволяет избегать вызова dotnet restore и npm i при любом изменении исходников.
@@ -14,3 +14,8 @@ RUN npm ci
 COPY ./app/frontend .
 
 RUN npm run build:ci
+
+FROM alpine:latest
+WORKDIR /app
+
+COPY --from=builder /app/dist /dist
