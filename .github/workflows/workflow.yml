@@ -83,27 +83,37 @@ jobs:
                     password: ${{ secrets.VPS_PASSWORD }}
                     port: ${{ secrets.VPS_PORT }}
                     source: ./build/docker-compose.prod.yml
-                    target: /home/${{ secrets.VPS_USERNAME }}/app
+                    target: /home/${{ secrets.VPS_USERNAME }}/app/docker-compose.prod.yml
 
 
-            -   name: Copy artifacts to server
+            -   name: Copy back artifact to server
                 uses: appleboy/scp-action@master
                 with:
                     host: ${{ secrets.VPS_HOST }}
                     username: ${{ secrets.VPS_USERNAME }}
                     password: ${{ secrets.VPS_PASSWORD }}
                     port: ${{ secrets.VPS_PORT }}
-                    source: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar,./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
-                    target: /home/${{ secrets.VPS_USERNAME }}/app
+                    source: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
+                    target: /home/${{ secrets.VPS_USERNAME }}/app/${{env.DOCKER_IMAGE_BACK}}.tar
+
+            -   name: Copy front artifact to server
+                uses: appleboy/scp-action@master
+                with:
+                    host: ${{ secrets.VPS_HOST }}
+                    username: ${{ secrets.VPS_USERNAME }}
+                    password: ${{ secrets.VPS_PASSWORD }}
+                    port: ${{ secrets.VPS_PORT }}
+                    source: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
+                    target: /home/${{ secrets.VPS_USERNAME }}/app/${{env.DOCKER_IMAGE_FRONT}}.tar
 
             -   name: Compile and deploy
                 uses: appleboy/ssh-action@v0.1.8
                 with:
-                    host: ${{ secrets.SSH_HOST }}
-                    username: ${{ secrets.SSH_USERNAME }}
-                    password: ${{ secrets.SSH_PASSWORD }}
+                    host: ${{ secrets.VPS_HOST }}
+                    username: ${{ secrets.VPS_USERNAME }}
+                    password: ${{ secrets.VPS_PASSWORD }}
                     script: |
-                        cd /home/${{ secrets.SSH_USERNAME }}/app
+                        cd /home/${{ secrets.VPS_USERNAME }}/app
                         docker load -i ${{ env.DOCKER_IMAGE_FRONT }}.tar
                         docker load -i ${{ env.DOCKER_IMAGE_BACK }}.tar
                         docker compose up -d
