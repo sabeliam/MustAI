@@ -8,8 +8,6 @@ WORKDIR /app
 COPY ./app/backend/package.json .
 COPY ./app/backend/package-lock.json .
 
-ENV NODE_ENV production
-
 RUN npm ci
 
 # Копирование остальных файлов
