@@ -1,5 +1,5 @@
 # Используем Node.js в качестве базового образа
-FROM node:18 AS builder
+FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Для поддержи кэширования шагов вначале в образ копируются наименее изменяемые файлы.
@@ -15,7 +15,10 @@ COPY ./app/frontend .
 
 RUN npm run build:ci
 
-FROM alpine:latest
-WORKDIR /app
+FROM nginx:1.15-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY --from=builder /app/dist /dist
+RUN ./nginx.conf
+
+# Перезапись конфигурационных файлов Nginx для работы с Angular
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf

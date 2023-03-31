@@ -5,17 +5,13 @@ volumes:
 
 services:
     frontend:
-        build:
-            context: ../
-            dockerfile: ./build/docker/front.build.dockerfile
+        image: "${DOCKER_IMAGE_FRONT}"
         ports:
             - 80:80
     backend:
-        build:
-            context: ../
-            dockerfile: ./build/docker/back.build.dockerfile
+        image: "${DOCKER_IMAGE_BACK}"
         environment:
-            MONGODB_URI: mongodb://mustai-mongo:27017
+            MONGODB_URI: mongodb://mongo:27017
         ports:
             - 3000:3000
         depends_on:

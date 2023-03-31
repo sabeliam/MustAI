@@ -4,10 +4,22 @@ import {PassportModule} from '@nestjs/passport';
 import {AuthModule} from './auth/auth.module';
 import {UserModule} from './user/user.module';
 import {FilmsModule} from './films/films.module';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://127.0.0.1:27017'),
+        ConfigModule.forRoot(),
+        MongooseModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => {
+                console.log(configService.get('MONGODB_URI'))
+
+                return {
+                    uri: configService.get('MONGODB_URI'),
+                }
+            },
+            inject: [ConfigService],
+        }),
         PassportModule,
         AuthModule,
         UserModule,
