@@ -36,8 +36,8 @@ jobs:
 
             -   name: Build and save Docker images
                 run: |
-                    docker build --tag $DOCKER_IMAGE_FRONT --file build/docker/front.build.dockerfile .
-                    docker save $DOCKER_IMAGE_FRONT > $DOCKER_IMAGE_FRONT.tar
+                    podman build --tag $DOCKER_IMAGE_FRONT --file build/docker/front.build.dockerfile .
+                    podman save $DOCKER_IMAGE_FRONT > $DOCKER_IMAGE_FRONT.tar
 
             -   name: Upload artifacts
                 uses: actions/upload-artifact@v3
@@ -53,8 +53,8 @@ jobs:
 
             -   name: Build and save Docker images
                 run: |
-                    docker build --tag $DOCKER_IMAGE_BACK --file build/docker/back.build.dockerfile .
-                    docker save $DOCKER_IMAGE_BACK > $DOCKER_IMAGE_BACK.tar
+                    podman build --tag $DOCKER_IMAGE_BACK --file build/docker/back.build.dockerfile .
+                    podman save $DOCKER_IMAGE_BACK > $DOCKER_IMAGE_BACK.tar
 
             -   name: Upload artifacts
                 uses: actions/upload-artifact@v3
@@ -114,9 +114,9 @@ jobs:
                     password: ${{ secrets.VPS_PASSWORD }}
                     script: |
                         cd /home/${{ secrets.VPS_USERNAME }}/app
-                        podman load -i ${{ env.DOCKER_IMAGE_FRONT }}.tar
-                        podman load -i ${{ env.DOCKER_IMAGE_BACK }}.tar
-                        podman-compose up -d
+                        podman load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
+                        podman load -i artifacts/${{ env.DOCKER_IMAGE_BACK }}.tar
+                        podman-compose -f podman-compose.prod.yml up -d
                 env:
                     DOCKER_IMAGE_BACK: ${{ env.DOCKER_IMAGE_BACK }}
                     DOCKER_IMAGE_FRONT: ${{ env.DOCKER_IMAGE_FRONT }}
