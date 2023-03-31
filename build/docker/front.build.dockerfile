@@ -18,7 +18,5 @@ RUN npm run build:ci
 FROM nginx:1.15-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-RUN ./nginx.conf
-
 # Перезапись конфигурационных файлов Nginx для работы с Angular
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
