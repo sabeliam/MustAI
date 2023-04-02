@@ -5,12 +5,14 @@ volumes:
 
 services:
     frontend:
+        container_name: mustai-front
         build:
             context: ../
             dockerfile: ./build/docker/front.build.dockerfile
         ports:
             - 80:80
     backend:
+        container_name: mustai-back
         build:
             context: ../
             dockerfile: ./build/docker/back.build.dockerfile

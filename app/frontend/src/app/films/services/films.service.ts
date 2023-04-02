@@ -1,18 +1,20 @@
 import {Inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, Observable} from 'rxjs';
-import {Film} from '@models';
-import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Environment, Film} from '@models';
+import {ENVIRONMENT} from '@core/environment/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FilmsService {
-    private readonly apiUrl = 'http://localhost:3000/films';
-    private readonly commentsUrl = 'http://localhost:3000/comments';
+    private readonly apiUrl = `${this.env.apiUrl}/films`;
 
 
-    constructor(private readonly httpClient: HttpClient) {
+    constructor(
+        private readonly httpClient: HttpClient,
+        @Inject(ENVIRONMENT) private readonly env: Environment
+    ) {
     }
 
     getFilms(): Observable<Film[]> {
@@ -30,12 +32,6 @@ export class FilmsService {
 
     removeFilm(id: string): Observable<any> {
         return this.httpClient.delete(`${this.apiUrl}/remove/${id}`);
-    }
-
-    getComments(filmId: string): Observable<Comment[]> {
-        return this.httpClient.get<Comment[]>(
-            `${this.commentsUrl}?filmId=${filmId}`
-        );
     }
 
     //

@@ -30,13 +30,6 @@ export class RemoveFilm {
     }
 }
 
-export class GetComments {
-    static readonly type = '[Comments] GetComments';
-
-    constructor(public filmId: string) {
-    }
-}
-
 export class UpdateComment {
     static readonly type = '[Comments] UpdateComment';
 

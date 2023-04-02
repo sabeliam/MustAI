@@ -5,7 +5,6 @@ import {Comment} from '@models/comment';
 import {
     AddComment,
     AddFilm, ClearStore,
-    GetComments,
     GetFilms,
     RemoveComment,
     RemoveFilm, UpdateComment,
@@ -54,8 +53,9 @@ export class FilmsState {
     }
 
     @Action(ClearStore)
-    clearStore({setState}: StateContext<FilmsStateModel>) {
-        setState(defaultFilmsState)
+    clearStore({setState}: StateContext<FilmsStateModel>): FilmsStateModel {
+        console.log('clearStore', defaultFilmsState)
+        return setState(defaultFilmsState);
     }
 
     @Action(GetFilms)
@@ -69,11 +69,6 @@ export class FilmsState {
                 });
             })
         );
-    }
-
-    @Action(GetComments)
-    getComments(ctx: StateContext<FilmsStateModel>, action: GetComments) {
-        return this.filmsService.getComments(action.filmId);
     }
 
     // @Action(AddComment)

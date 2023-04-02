@@ -19,7 +19,7 @@ const toDTOFilm = (film: IFilm): FilmDTO => ({
     comments: film.comments
 })
 
-@Controller('films')
+@Controller('api/films')
 export class FilmsController {
     constructor(private readonly filmsService: FilmsService) {
     }

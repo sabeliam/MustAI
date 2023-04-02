@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserDTO} from '@core/auth/auth.model';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {Router} from '@angular/router';
 import {Store} from '@ngxs/store';
 import {ClearStore, GetFilms} from '../../films/store/films.actions';
+import {ENVIRONMENT} from '@core/environment/environment';
+import {Environment} from '@models';
 
 export interface User {
     username: string
@@ -15,13 +17,13 @@ export interface User {
 })
 export class AuthService {
     private currentUser$ = new BehaviorSubject<User | null>(null)
-
-    private backend = 'http://localhost:3000';
+    private apiUrl = this.env.apiUrl;
 
     constructor(
         private readonly httpClient: HttpClient,
         private readonly router: Router,
-        private readonly store: Store
+        private readonly store: Store,
+        @Inject(ENVIRONMENT) private readonly env: Environment,
     ) {
     }
 
@@ -30,7 +32,7 @@ export class AuthService {
             return this.currentUser$
         }
 
-        return this.httpClient.get<User>(`${this.backend}/user`)
+        return this.httpClient.get<User>(`${this.apiUrl}/user`)
             .pipe(tap(user => this.currentUser$.next(user)))
     }
 
@@ -45,7 +47,7 @@ export class AuthService {
     }
 
     public register(user: UserDTO): Observable<{ access_token: string }> {
-        return this.httpClient.post<{ access_token: string }>(`${this.backend}/auth/register`, user)
+        return this.httpClient.post<{ access_token: string }>(`${this.apiUrl}/auth/register`, user)
             .pipe(tap(value => {
                 localStorage.setItem('access_token', value.access_token);
                 this.currentUser$.next({username: user.username})
@@ -54,7 +56,7 @@ export class AuthService {
     }
 
     public login(user: UserDTO): Observable<{ access_token: string }> {
-        return this.httpClient.post<{ access_token: string }>(`${this.backend}/auth/login`, user)
+        return this.httpClient.post<{ access_token: string }>(`${this.apiUrl}/auth/login`, user)
             .pipe(tap(value => {
                 this.currentUser$.next({username: user.username})
                 localStorage.setItem('access_token', value.access_token);
@@ -63,7 +65,7 @@ export class AuthService {
     }
 
     public logout(): Observable<any> {
-        return this.httpClient.post<{ access_token: string }>(`${this.backend}/auth/logout`, {})
+        return this.httpClient.post<{ access_token: string }>(`${this.apiUrl}/auth/logout`, {})
             .pipe(tap(value => {
                 this.currentUser$.next(null)
                 localStorage.removeItem('access_token');

@@ -5,13 +5,15 @@ volumes:
 
 services:
     frontend:
+        container_name: "${DOCKER_IMAGE_FRONT}"
         image: "${DOCKER_IMAGE_FRONT}"
         ports:
             - 80:80
     backend:
+        container_name: "${DOCKER_IMAGE_BACK}"
         image: "${DOCKER_IMAGE_BACK}"
         environment:
-            MONGODB_URI: mongodb://mongo:27017
+            MONGODB_URI: mongodb://mustai-mongo:27017
         ports:
             - 3000:3000
         depends_on:

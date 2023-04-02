@@ -18,7 +18,7 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "mongo:run": "docker run -p 27018:27018 -d -v mongo-data:/data/db --name mongo mongo:4.0",
+        "mongo:run": "docker run -p 27017:27017 -v mongo-data:/data/db --name mongo mongo:4.0",
         "mongo:shell": "docker exec -it mongo mongo"
     },
     "dependencies": {

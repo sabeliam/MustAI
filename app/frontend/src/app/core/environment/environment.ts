@@ -1,5 +1,5 @@
-import { InjectionToken } from '@angular/core';
-import { Environment } from '@models';
+import {InjectionToken} from '@angular/core';
+import {Environment} from '@models';
 
 export const ENVIRONMENT = new InjectionToken<Environment>('environment', {
     factory: () => ({
@@ -8,5 +8,6 @@ export const ENVIRONMENT = new InjectionToken<Environment>('environment', {
         openAiCompletionUrl: '',
         production: false,
         tmdbApiKey: '',
+        apiUrl: ''
     }),
 });

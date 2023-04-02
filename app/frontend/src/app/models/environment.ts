@@ -4,4 +4,5 @@ export interface Environment {
     openAiApiKey: string;
     openAiCompletionUrl: string;
     tmdbApiKey: string;
+    apiUrl: string;
 }
