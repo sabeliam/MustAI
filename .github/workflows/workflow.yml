@@ -95,6 +95,7 @@ jobs:
                     port: ${{ secrets.VPS_PORT }}
                     source: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
                     target: /home/${{ secrets.VPS_USERNAME }}/app/
+                    timeout: 120s
 
             -   name: Copy front artifact to server
                 uses: appleboy/scp-action@master
@@ -105,13 +106,15 @@ jobs:
                     port: ${{ secrets.VPS_PORT }}
                     source: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
                     target: /home/${{ secrets.VPS_USERNAME }}/app/
+                    timeout: 120s
 
             -   name: Compile and deploy
-                uses: appleboy/ssh-action@v0.1.8
+                uses: appleboy/ssh-action@master
                 with:
                     host: ${{ secrets.VPS_HOST }}
                     username: ${{ secrets.VPS_USERNAME }}
                     password: ${{ secrets.VPS_PASSWORD }}
+                    timeout: 120s
                     script: |
                         cd /home/${{ secrets.VPS_USERNAME }}/app
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
