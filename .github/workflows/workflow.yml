@@ -151,6 +151,12 @@ jobs:
         needs: [ send-back-to-server, send-front-to-server, send-docker-compose-to-server ]
         runs-on: ubuntu-latest
         steps:
+            -   name: Set environment variables
+                run: |
+                    export DOCKER_IMAGE_FRONT=${{ env.DOCKER_IMAGE_FRONT }}
+                    export DOCKER_IMAGE_BACK=${{ env.DOCKER_IMAGE_BACK }}
+                shell: bash
+
             -   name: Compile and deploy
                 env:
                     DOCKER_IMAGE_FRONT: ${{ env.DOCKER_IMAGE_FRONT }}
