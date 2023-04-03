@@ -164,6 +164,6 @@ jobs:
                     timeout: 300s
                     script: |
                         cd /home/${{ secrets.VPS_USERNAME }}/app
-                        export DOCKER_IMAGE_FRONT=${{ env.DOCKER_IMAGE_FRONT }}
-                        export DOCKER_IMAGE_BACK=${{ env.DOCKER_IMAGE_BACK }}
+                        docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
+                        docker load -i artifacts/${{ env.DOCKER_IMAGE_BACK }}.tar
                         docker compose -f build/docker-compose.prod.yml up -d --force-recreate

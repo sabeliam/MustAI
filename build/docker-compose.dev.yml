@@ -13,6 +13,8 @@ services:
             - 80:80
         depends_on:
             - backend
+        env_file:
+            - ../app/frontend/.env
     backend:
         container_name: mustai-back
         build:
@@ -24,6 +26,8 @@ services:
             - 3000:3000
         depends_on:
             - mongo
+        env_file:
+            - ../app/backend/.env
     mongo:
         container_name: mustai-mongo
         image: mongo:4

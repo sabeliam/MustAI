@@ -61,7 +61,6 @@ export class MainViewComponent {
     // public currentViewType$ = new BehaviorSubject<ViewType>(ViewType.Cards);
     public viewType = ViewType;
 
-
     @Select(FilmsState.filmList) public filmList$: Observable<Film[]>;
     dropdownOpen = false;
     items: View[] = [
