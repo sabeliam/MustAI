@@ -131,10 +131,6 @@ jobs:
                     target: /home/${{ secrets.VPS_USERNAME }}/app/
                     timeout: 300s
 
-    send-docker-compose-to-server:
-        runs-on: ubuntu-latest
-        steps:
-
     deploy:
         needs: [ send-back-to-server, send-front-to-server ]
         runs-on: ubuntu-latest
