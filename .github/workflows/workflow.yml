@@ -66,8 +66,32 @@ jobs:
                     name: my-artifacts
                     path: ${{env.DOCKER_IMAGE_BACK}}.tar
 
-    deploy:
-        needs: [ build-front, build-back ]
+    send-front-to-server:
+        needs: [ build-front ]
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v3
+
+            -   name: Download artifacts
+                uses: actions/download-artifact@v3
+                with:
+                    name: my-artifacts
+                    path: artifacts
+
+            -   name: Copy front artifact to server
+                uses: appleboy/scp-action@master
+                with:
+                    host: ${{ secrets.VPS_HOST }}
+                    username: ${{ secrets.VPS_USERNAME }}
+                    password: ${{ secrets.VPS_PASSWORD }}
+                    port: ${{ secrets.VPS_PORT }}
+                    source: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
+                    target: /home/${{ secrets.VPS_USERNAME }}/app/
+                    timeout: 300s
+
+    send-back-to-server:
+        needs: [ build-back ]
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout code
@@ -125,3 +149,37 @@ jobs:
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_BACK }}.tar
                         docker compose -f build/docker-compose.prod.yml -e DOCKER_IMAGE_BACK=mustai-back DOCKER_IMAGE_FRONT=mustai-front up -d --force-recreate
+
+    send-docker-compose-to-server:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v3
+
+            -   name: Copy docker-compose.dev.yml to server
+                uses: appleboy/scp-action@master
+                with:
+                    host: ${{ secrets.VPS_HOST }}
+                    username: ${{ secrets.VPS_USERNAME }}
+                    password: ${{ secrets.VPS_PASSWORD }}
+                    port: ${{ secrets.VPS_PORT }}
+                    source: ./build/docker-compose.prod.yml
+                    target: /home/${{ secrets.VPS_USERNAME }}/app/
+
+    deploy:
+        needs: [ send-back-to-server, send-front-to-server, send-docker-compose-to-server ]
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Compile and deploy
+                uses: appleboy/ssh-action@master
+                with:
+                    host: ${{ secrets.VPS_HOST }}
+                    username: ${{ secrets.VPS_USERNAME }}
+                    password: ${{ secrets.VPS_PASSWORD }}
+                    port: ${{ secrets.VPS_PORT }}
+                    timeout: 300s
+                    script: |
+                        cd /home/${{ secrets.VPS_USERNAME }}/app
+                        docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
+                        docker load -i artifacts/${{ env.DOCKER_IMAGE_BACK }}.tar
+                        docker compose -f build/docker-compose.prod.yml up -d --force-recreate
