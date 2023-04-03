@@ -120,12 +120,13 @@ jobs:
                     host: ${{ secrets.VPS_HOST }}
                     username: ${{ secrets.VPS_USERNAME }}
                     password: ${{ secrets.VPS_PASSWORD }}
+                    port: ${{ secrets.VPS_PORT }}
                     timeout: 300s
                     script: |
                         cd /home/${{ secrets.VPS_USERNAME }}/app
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_BACK }}.tar
-                        docker compose -f build/docker-compose.prod.yml up --force-recreate
+                        docker compose -f build/docker-compose.prod.yml up -d --force-recreate
                 env:
                     DOCKER_IMAGE_BACK: ${{ env.DOCKER_IMAGE_BACK }}
                     DOCKER_IMAGE_FRONT: ${{ env.DOCKER_IMAGE_FRONT }}
