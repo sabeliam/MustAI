@@ -124,4 +124,4 @@ jobs:
                         cd /home/${{ secrets.VPS_USERNAME }}/app
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_BACK }}.tar
-                        docker compose -f build/docker-compose.prod.yml -e DOCKER_IMAGE_BACK=$DOCKER_IMAGE_BACK DOCKER_IMAGE_FRONT=$DOCKER_IMAGE_FRONT up -d --force-recreate
+                        docker compose -f build/docker-compose.prod.yml -e DOCKER_IMAGE_BACK=mustai-back DOCKER_IMAGE_FRONT=mustai-front up -d --force-recreate
