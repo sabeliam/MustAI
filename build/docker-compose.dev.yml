@@ -11,6 +11,8 @@ services:
             dockerfile: ./build/docker/front.build.dockerfile
         ports:
             - 80:80
+        depends_on:
+            - backend
     backend:
         container_name: mustai-back
         build:
