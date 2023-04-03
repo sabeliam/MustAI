@@ -62,7 +62,7 @@
                                 }
                             ],
                             "outputHashing": "all",
-                            "baseHref": "/"
+                            "baseHref": "/MustAI/"
                         },
                         "development": {
                             "buildOptimizer": false,
@@ -71,7 +71,7 @@
                             "extractLicenses": false,
                             "sourceMap": true,
                             "namedChunks": true,
-                            "baseHref": "/"
+                            "baseHref": "/MustAI/"
                         }
                     },
                     "defaultConfiguration": "production"

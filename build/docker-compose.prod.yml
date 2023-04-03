@@ -9,6 +9,8 @@ services:
         image: "${DOCKER_IMAGE_FRONT}"
         ports:
             - 80:80
+        depends_on:
+            - backend
     backend:
         container_name: "${DOCKER_IMAGE_BACK}"
         image: "${DOCKER_IMAGE_BACK}"

@@ -35,6 +35,8 @@ jobs:
     build-front:
         runs-on: ubuntu-latest
         steps:
+            -   uses: hmarr/debug-action@v2
+
             -   name: Checkout code
                 uses: actions/checkout@v3
 
@@ -123,7 +125,7 @@ jobs:
                         cd /home/${{ secrets.VPS_USERNAME }}/app
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_BACK }}.tar
-                        docker compose -f build/docker-compose.prod.yml up -d --force-recreate
+                        docker compose -f build/docker-compose.prod.yml up --force-recreate
                 env:
                     DOCKER_IMAGE_BACK: ${{ env.DOCKER_IMAGE_BACK }}
                     DOCKER_IMAGE_FRONT: ${{ env.DOCKER_IMAGE_FRONT }}
