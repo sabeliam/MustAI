@@ -40,6 +40,7 @@ jobs:
 
             -   name: Create env file
                 run: |
+                    cd app/frontend
                     touch .env
                     echo OPEN_AI_COMPLETION_URL=${{ vars.OPEN_AI_COMPLETION_URL }} >> .env
                     echo API_URL=${{ vars.API_URL }} >> .env
@@ -66,6 +67,7 @@ jobs:
 
             -   name: Create env file
                 run: |
+                    cd app/backend
                     touch .env
                     echo MONGODB_URI=mongodb://mustai-mongo:27017 >> .env
                     cat .env
