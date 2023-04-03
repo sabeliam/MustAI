@@ -134,6 +134,11 @@ jobs:
     send-docker-compose-to-server:
         runs-on: ubuntu-latest
         steps:
+
+    deploy:
+        needs: [ send-back-to-server, send-front-to-server ]
+        runs-on: ubuntu-latest
+        steps:
             -   name: Checkout code
                 uses: actions/checkout@v3
 
@@ -147,10 +152,6 @@ jobs:
                     source: ./build/docker-compose.prod.yml
                     target: /home/${{ secrets.VPS_USERNAME }}/app/
 
-    deploy:
-        needs: [ send-back-to-server, send-front-to-server, send-docker-compose-to-server ]
-        runs-on: ubuntu-latest
-        steps:
             -   name: Set environment variables
                 run: |
                     export DOCKER_IMAGE_FRONT=${{ env.DOCKER_IMAGE_FRONT }}
