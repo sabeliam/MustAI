@@ -3,9 +3,7 @@
 const {writeFile, existsSync, mkdirSync} = require('fs');
 const {argv} = require('yargs');
 
-require('dotenv').config({
-    path: 'src/environments/.env',
-});
+require('dotenv').config({path: `./.env`});
 const environment = argv.environment;
 
 function writeFileUsingFS(targetPath, environmentFileContent) {
