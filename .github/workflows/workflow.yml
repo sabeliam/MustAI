@@ -3,6 +3,10 @@ name: Deploy
 env:
     DOCKER_IMAGE_BACK: mustai-back
     DOCKER_IMAGE_FRONT: mustai-front
+    OPEN_AI_SECRET: ${{ secrets.OPEN_AI_SECRET }}
+    OPEN_AI_COMPLETION_URL: ${{ vars.OPEN_AI_COMPLETION_URL }}
+    TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+    API_URL: ${{ vars.API_URL }}
 
 on:
     # Runs on pushes targeting the default branch
@@ -95,7 +99,7 @@ jobs:
                     port: ${{ secrets.VPS_PORT }}
                     source: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
                     target: /home/${{ secrets.VPS_USERNAME }}/app/
-                    timeout: 120s
+                    timeout: 300s
 
             -   name: Copy front artifact to server
                 uses: appleboy/scp-action@master
@@ -106,7 +110,7 @@ jobs:
                     port: ${{ secrets.VPS_PORT }}
                     source: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
                     target: /home/${{ secrets.VPS_USERNAME }}/app/
-                    timeout: 120s
+                    timeout: 300s
 
             -   name: Compile and deploy
                 uses: appleboy/ssh-action@master
@@ -114,7 +118,7 @@ jobs:
                     host: ${{ secrets.VPS_HOST }}
                     username: ${{ secrets.VPS_USERNAME }}
                     password: ${{ secrets.VPS_PASSWORD }}
-                    timeout: 120s
+                    timeout: 300s
                     script: |
                         cd /home/${{ secrets.VPS_USERNAME }}/app
                         docker load -i artifacts/${{ env.DOCKER_IMAGE_FRONT }}.tar
