@@ -14,4 +14,9 @@
 .settings/
 *.sublime-workspace
 
+#env
+.env
+src/environments/*
+src/environments/.gitkeep
+
 db.json

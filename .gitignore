@@ -1,9 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-#env
-app/frontend/src/environments/*
-!app/frontend/src/environments/.gitkeep
-
 # dependencies
 /node_modules
 

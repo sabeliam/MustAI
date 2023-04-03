@@ -5,3 +5,5 @@
 
 # compiled output
 /dist
+
+.env
