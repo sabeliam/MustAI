@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CompletionService } from '@core/completion/opeai/completion.service';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {CompletionService} from '@core/completion/opeai/completion.service';
 import {
     TuiAlertService,
     TuiDialogContext,
     TuiDialogService,
 } from '@taiga-ui/core';
-import { CreateCompletionResponse } from 'openai';
-import { FormControl } from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {
     BehaviorSubject,
     delay,
@@ -19,12 +18,12 @@ import {
     Subject,
     switchMap,
 } from 'rxjs';
-import { TmdbClient } from '@core/description/tmdb/tmdb-client.service';
-import { Film } from '@models';
-import { BaseItem } from '@models/base-item';
-import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
-import { fadeInList } from '@shared/animations/fade-in-list-animation';
-import { TuiSheetService } from '@taiga-ui/addon-mobile';
+import {TmdbClient} from '@core/description/tmdb/tmdb-client.service';
+import {Film} from '@models';
+import {BaseItem} from '@models/base-item';
+import {PolymorpheusContent} from '@tinkoff/ng-polymorpheus';
+import {fadeInList} from '@shared/animations/fade-in-list-animation';
+import {TuiSheetService} from '@taiga-ui/addon-mobile';
 
 @Component({
     selector: 'app-assistant',
@@ -43,7 +42,8 @@ export class AssistantComponent {
         private readonly openaiService: CompletionService,
         private readonly descriptionService: TmdbClient,
         private readonly tuiSheetService: TuiSheetService
-    ) {}
+    ) {
+    }
 
     submit() {
         if (!this.input.value) {
@@ -55,8 +55,8 @@ export class AssistantComponent {
             .getResponse(this.input.value)
             .pipe(
                 map(
-                    (value: CreateCompletionResponse) =>
-                        value.choices[0].text || ''
+                    (value: { text: string }) =>
+                        value.text || ''
                 ),
                 switchMap((value: string) => {
                     return from(this.getListFromText(value));

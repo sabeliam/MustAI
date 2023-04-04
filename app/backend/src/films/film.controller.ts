@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Req, UseGuards} from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
 import {FilmsService} from './film.service';
 import {Film, FilmDTO, IFilm} from './film.schema';
@@ -35,6 +35,7 @@ export class FilmsController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('add')
+    @HttpCode(204)
     async addFilm(@Req() req, @Body() body: FilmDTO) {
         const {_id: sub} = req.user; // sub содержит идентификатор пользователя из токена JWT
         return this.filmsService.addFilmToUser(sub, fromDTOFilm(body));

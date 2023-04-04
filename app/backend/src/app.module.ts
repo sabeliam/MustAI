@@ -5,6 +5,8 @@ import {AuthModule} from './auth/auth.module';
 import {UserModule} from './user/user.module';
 import {FilmsModule} from './films/films.module';
 import {ConfigModule, ConfigService} from '@nestjs/config';
+import {OpenaiModule} from './openai/openai.module';
+import {DescriptionModule} from './description/description.module';
 
 @Module({
     imports: [
@@ -23,7 +25,9 @@ import {ConfigModule, ConfigService} from '@nestjs/config';
         PassportModule,
         AuthModule,
         UserModule,
-        FilmsModule
+        FilmsModule,
+        OpenaiModule,
+        DescriptionModule
     ],
 })
 export class AppModule {

@@ -21,7 +21,6 @@
     [(open)]="open"
     [content]="dropdown"
     class="t-input"
-    tuiDropdownDirection="top"
     tuiDropdownLimitWidth="fixed"
 >
     <tui-primitive-textfield
@@ -49,7 +48,7 @@
                 >
                     <app-search-item
                         (click)="openDialog(searchResult)"
-                        (clickAdd)="addFilm(searchResult)"
+                        (clickAdd)="openDialog(searchResult)"
                         [searchResult]="searchResult"
                     ></app-search-item>
                 </a>

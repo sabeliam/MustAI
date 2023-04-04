@@ -44,8 +44,6 @@ jobs:
                     touch .env
                     echo OPEN_AI_COMPLETION_URL=${{ vars.OPEN_AI_COMPLETION_URL }} >> .env
                     echo API_URL=${{ vars.API_URL }} >> .env
-                    echo OPEN_AI_SECRET=${{ secrets.OPEN_AI_SECRET }} >> .env
-                    echo TMDB_API_KEY=${{ secrets.TMDB_API_KEY }} >> .env
                     cat .env
 
             -   name: Build and save Docker images
@@ -70,6 +68,8 @@ jobs:
                     cd app/backend
                     touch .env
                     echo MONGODB_URI=mongodb://mustai-mongo:27017 >> .env
+                    echo OPEN_AI_SECRET=${{ secrets.OPEN_AI_SECRET }} >> .env
+                    echo TMDB_API_KEY=${{ secrets.TMDB_API_KEY }} >> .env
                     cat .env
 
             -   name: Build and save Docker images

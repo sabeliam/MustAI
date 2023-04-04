@@ -35,3 +35,10 @@ services:
             - mongo-data:/data/db
         ports:
             - 27017:27017
+
+    start-infra:
+        container_name: mustai-start-infra
+        image: dadarek/wait-for-dependencies
+        depends_on:
+            - mongo
+        command: mongo:27017

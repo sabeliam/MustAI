@@ -1,6 +1,5 @@
-import { Observable } from 'rxjs';
-import { CreateCompletionResponse } from 'openai';
+import {Observable} from 'rxjs';
 
 export interface Completion {
-    getResponse(ask: string): Observable<CreateCompletionResponse>;
+    getResponse(ask: string): Observable<{ text: string }>;
 }

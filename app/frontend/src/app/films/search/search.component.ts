@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Injector, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {of, Subject, switchMap, takeUntil, throttleTime} from 'rxjs';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
@@ -31,7 +31,8 @@ export class SearchComponent implements OnInit {
         private readonly tuiDialogService: TuiDialogService,
         private readonly injector: Injector,
         private readonly destroy$: TuiDestroyService,
-        private readonly store: Store
+        private readonly store: Store,
+        private cdr: ChangeDetectorRef,
     ) {
     }
 
@@ -73,6 +74,7 @@ export class SearchComponent implements OnInit {
     openDialog(searchResult: SearchResult) {
         this.addFilm(searchResult);
         this.open = false;
+        // this.cdr.markForCheck();
         // return this.tuiDialogService.open(
         //     new PolymorpheusComponent(
         //         FilmDialogComponent,

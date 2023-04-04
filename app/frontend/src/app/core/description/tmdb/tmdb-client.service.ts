@@ -1,40 +1,31 @@
-import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ENVIRONMENT } from '../../environment/environment';
-import { Environment } from '@models';
-import { SearchResult, SearchResults, TmdbSearchResult } from '@models/tmdb';
+import {Inject, Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ENVIRONMENT} from '../../environment/environment';
+import {Environment} from '@models';
+import {SearchResult, SearchResults, TmdbSearchResult} from '@models/tmdb';
 
 @Injectable()
 export class TmdbClient {
-    private headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.env.tmdbApiKey}`,
-    });
+    private readonly apiUrl = `${this.env.apiUrl}/description`;
 
     constructor(
         @Inject(ENVIRONMENT) private readonly env: Environment,
         private readonly httpClient: HttpClient
-    ) {}
+    ) {
+    }
 
     public findFilmByImdbId(id: string): Observable<TmdbSearchResult> {
-        const url = new URL(`https://api.themoviedb.org/3/find/${id}`);
+        const url = new URL(`${this.apiUrl}/findFilmByImdbId/${id}`);
 
-        url.searchParams.append('external_source', 'imdb_id');
-        url.searchParams.append('language', 'en');
-
-        return this.httpClient.get<TmdbSearchResult>(url.toString(), {
-            headers: this.headers,
-        });
+        return this.httpClient.get<TmdbSearchResult>(url.toString());
     }
 
     public findFilmByName(name: string): Observable<SearchResults> {
-        const url = new URL('https://api.themoviedb.org/3/search/movie');
+        const url = new URL(`${this.apiUrl}/findFilmByName/`);
 
         url.searchParams.append('query', name);
 
-        return this.httpClient.get<SearchResults>(url.toString(), {
-            headers: this.headers,
-        });
+        return this.httpClient.get<SearchResults>(url.toString());
     }
 }

@@ -1,6 +1,8 @@
 <div class="tui-container tui-container_adaptive">
     <h2 class="tui-text_h3 tui-space_vertical-5">Список фильмов</h2>
 
+    <app-search>Добавить фильм</app-search>
+
     <tui-hosted-dropdown
         #dropdown
         [(open)]="dropdownOpen"
@@ -43,10 +45,6 @@
             <ng-container *ngTemplateOutlet="listView"></ng-container>
         </ng-container>
     </ng-container>
-
-    <!--    <div class="search">-->
-    <app-search>Добавить фильм</app-search>
-    <!--    </div>-->
 
 </div>
 <ng-template #cardsView>

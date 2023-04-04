@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { CompletionService } from './completion.service';
-import { MockCompletionService } from '@core/completion/opeai/completion.mock.service';
+import {CompletionService} from './completion.service';
+import {MockCompletionService} from '@core/completion/opeai/completion.mock.service';
 
-describe('OpenaiService', () => {
+describe('DescriptionService', () => {
     let service: CompletionService;
 
     beforeEach(() => {
