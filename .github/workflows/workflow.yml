@@ -97,15 +97,29 @@ jobs:
                     path: artifacts
 
             -   name: Copy front artifact to server
-                uses: appleboy/scp-action@master
-                with:
-                    host: ${{ secrets.VPS_HOST }}
-                    username: ${{ secrets.VPS_USERNAME }}
-                    password: ${{ secrets.VPS_PASSWORD }}
-                    port: ${{ secrets.VPS_PORT }}
-                    source: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
-                    target: /home/${{ secrets.VPS_USERNAME }}/app/
-                    timeout: 300s
+                #                uses: appleboy/scp-action@master
+                #                with:
+                #                    host: ${{ secrets.VPS_HOST }}
+                #                    username: ${{ secrets.VPS_USERNAME }}
+                #                    password: ${{ secrets.VPS_PASSWORD }}
+                #                    port: ${{ secrets.VPS_PORT }}
+                #                    source: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
+                #                    target: /home/${{ secrets.VPS_USERNAME }}/app/
+                #                    timeout: 300s
+                uses: up9cloud/action-rsync@master
+                env:
+                    HOST: ${{ secrets.VPS_HOST }}
+                    KEY: ${{secrets.SSH_PRIVATE_KEY}}
+                    TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
+                    VERBOSE: true
+                    USER: ${{ secrets.VPS_USERNAME }}
+                    PORT: ${{ secrets.VPS_PORT }}
+                    ARGS: -az --exclude=/.git/
+                    SOURCE: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
+                    PRE_SCRIPT: |
+                        echo start at:
+                        date -u
+                    POST_SCRIPT: "echo done at: && date -u"
 
     send-back-to-server:
         needs: [ build-back ]
@@ -121,15 +135,29 @@ jobs:
                     path: artifacts
 
             -   name: Copy back artifact to server
-                uses: appleboy/scp-action@master
-                with:
-                    host: ${{ secrets.VPS_HOST }}
-                    username: ${{ secrets.VPS_USERNAME }}
-                    password: ${{ secrets.VPS_PASSWORD }}
-                    port: ${{ secrets.VPS_PORT }}
-                    source: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
-                    target: /home/${{ secrets.VPS_USERNAME }}/app/
-                    timeout: 300s
+                #                uses: appleboy/scp-action@master
+                #                with:
+                #                    host: ${{ secrets.VPS_HOST }}
+                #                    username: ${{ secrets.VPS_USERNAME }}
+                #                    password: ${{ secrets.VPS_PASSWORD }}
+                #                    port: ${{ secrets.VPS_PORT }}
+                #                    source: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
+                #                    target: /home/${{ secrets.VPS_USERNAME }}/app/
+                #                    timeout: 300s
+                uses: up9cloud/action-rsync@master
+                env:
+                    HOST: ${{ secrets.VPS_HOST }}
+                    KEY: ${{secrets.SSH_PRIVATE_KEY}}
+                    TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
+                    VERBOSE: true
+                    USER: ${{ secrets.VPS_USERNAME }}
+                    PORT: ${{ secrets.VPS_PORT }}
+                    ARGS: -az --exclude=/.git/
+                    SOURCE: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
+                    PRE_SCRIPT: |
+                        echo start at:
+                        date -u
+                    POST_SCRIPT: "echo done at: && date -u"
 
     deploy:
         needs: [ send-back-to-server, send-front-to-server ]

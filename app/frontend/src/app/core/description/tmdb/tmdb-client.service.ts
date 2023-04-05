@@ -16,16 +16,10 @@ export class TmdbClient {
     }
 
     public findFilmByImdbId(id: string): Observable<TmdbSearchResult> {
-        const url = new URL(`${this.apiUrl}/findFilmByImdbId/${id}`);
-
-        return this.httpClient.get<TmdbSearchResult>(url.toString());
+        return this.httpClient.get<TmdbSearchResult>(`${this.apiUrl}/findFilmByImdbId/${id}`);
     }
 
     public findFilmByName(name: string): Observable<SearchResults> {
-        const url = new URL(`${this.apiUrl}/findFilmByName/`);
-
-        url.searchParams.append('query', name);
-
-        return this.httpClient.get<SearchResults>(url.toString());
+        return this.httpClient.get<SearchResults>(`${this.apiUrl}/findFilmByName/?query=${name}`);
     }
 }
