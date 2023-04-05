@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Prod
 
 env:
     DOCKER_IMAGE_BACK: mustai-back
@@ -7,15 +7,11 @@ env:
     OPEN_AI_COMPLETION_URL: ${{ vars.OPEN_AI_COMPLETION_URL }}
     TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
     API_URL: ${{ vars.API_URL }}
-
 on:
     # Runs on pushes targeting the default branch
     push:
         branches: [ "main" ]
         tags: [ 'v*' ]
-
-    pull_request:
-        branches: [ "main" ]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
@@ -63,19 +59,16 @@ jobs:
             -   name: Checkout code
                 uses: actions/checkout@v3
 
-            -   name: Create env file
-                run: |
-                    cd app/backend
-                    touch .env
-                    echo MONGODB_URI=mongodb://mustai-mongo:27017 >> .env
-                    echo OPEN_AI_SECRET=${{ secrets.OPEN_AI_SECRET }} >> .env
-                    echo TMDB_API_KEY=${{ secrets.TMDB_API_KEY }} >> .env
-                    cat .env
-
             -   name: Build and save Docker images
                 run: |
-                    docker build --tag $DOCKER_IMAGE_BACK --file build/docker/back.build.dockerfile .
+                    docker build \
+                    --tag $DOCKER_IMAGE_BACK \
+                    --file build/docker/back.build.dockerfile \
+                    --build-arg MONGODB_URI=${{MONGODB_URI}} \
+                    --build-arg OPEN_AI_SECRET=${{OPEN_AI_SECRET}} \
+                    --build-arg TMDB_API_KEY=${{TMDB_API_KEY}} .
                     docker save $DOCKER_IMAGE_BACK > $DOCKER_IMAGE_BACK.tar
+
 
             -   name: Upload artifacts
                 uses: actions/upload-artifact@v3

@@ -1,29 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {CompletionService} from '@core/completion/opeai/completion.service';
-import {
-    TuiAlertService,
-    TuiDialogContext,
-    TuiDialogService,
-} from '@taiga-ui/core';
+import {TuiAlertService, TuiDialogContext, TuiNotification,} from '@taiga-ui/core';
 import {FormControl} from '@angular/forms';
-import {
-    BehaviorSubject,
-    delay,
-    from,
-    map,
-    mergeMap,
-    Observable,
-    of,
-    scan,
-    Subject,
-    switchMap,
-} from 'rxjs';
+import {BehaviorSubject, from, map, switchMap,} from 'rxjs';
 import {TmdbClient} from '@core/description/tmdb/tmdb-client.service';
-import {Film} from '@models';
-import {BaseItem} from '@models/base-item';
 import {PolymorpheusContent} from '@tinkoff/ng-polymorpheus';
 import {fadeInList} from '@shared/animations/fade-in-list-animation';
-import {TuiSheetService} from '@taiga-ui/addon-mobile';
 
 @Component({
     selector: 'app-assistant',
@@ -41,7 +23,7 @@ export class AssistantComponent {
     constructor(
         private readonly openaiService: CompletionService,
         private readonly descriptionService: TmdbClient,
-        private readonly tuiSheetService: TuiSheetService
+        private readonly tuiAlertService: TuiAlertService
     ) {
     }
 
@@ -64,9 +46,18 @@ export class AssistantComponent {
                 // mergeMap((value) => this.getDescription(value)),
                 // scan((films, film) => films.concat(film), [])
             )
-            .subscribe((value) => {
-                this.isLoading = false;
-                this.answer$.next([...this.answer$.getValue(), value]);
+            .subscribe({
+                next: (value) => {
+                    this.answer$.next([...this.answer$.getValue(), value]);
+                },
+                error: (error) => {
+                    console.error(error);
+                    this.tuiAlertService
+                        .open('Something went wrong :(', {status: TuiNotification.Error}).subscribe()
+                },
+                complete: () => {
+                    this.isLoading = false;
+                }
             });
     }
 

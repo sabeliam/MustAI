@@ -13,6 +13,3 @@ docker compose -f $COMPOSE_FILE -p $PROJECT_NAME down
 docker compose -f $COMPOSE_FILE -p $PROJECT_NAME run --rm start-infra
 
 popd
-
-
-# ssh -i ~/.ssh/mustai-rsa -p '5829' 'github@185.166.163.132'
