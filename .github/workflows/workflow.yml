@@ -106,20 +106,30 @@ jobs:
                 #                    source: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
                 #                    target: /home/${{ secrets.VPS_USERNAME }}/app/
                 #                    timeout: 300s
-                uses: up9cloud/action-rsync@master
-                env:
-                    HOST: ${{ secrets.VPS_HOST }}
-                    KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                    TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
-                    VERBOSE: true
-                    USER: ${{ secrets.VPS_USERNAME }}
-                    SSH_ARGS: -p ${{ secrets.VPS_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=verbose
-                    ARGS: -az --exclude=/.git/
-                    SOURCE: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
-                    PRE_SCRIPT: |
-                        echo start at:
-                        date -u
-                    POST_SCRIPT: "echo done at: && date -u"
+#                uses: up9cloud/action-rsync@master
+#                env:
+#                    HOST: ${{ secrets.VPS_HOST }}
+#                    KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#                    TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
+#                    VERBOSE: true
+#                    USER: ${{ secrets.VPS_USERNAME }}
+#                    SSH_ARGS: -p ${{ secrets.VPS_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=verbose
+#                    ARGS: -az --exclude=/.git/
+#                    SOURCE: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
+#                    PRE_SCRIPT: |
+#                        echo start at:
+#                        date -u
+#                    POST_SCRIPT: "echo done at: && date -u"
+
+                uses: burnett01/rsync-deployments@5.2.1
+                with:
+                    switches: -avzr --delete
+                    path: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
+                    remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
+                    remote_host: ${{ secrets.VPS_HOST }}
+                    remote_port: ${{ secrets.VPS_PORT }}
+                    remote_user: ${{ secrets.VPS_USERNAME }}
+                    remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     send-back-to-server:
         needs: [ build-back ]
@@ -144,20 +154,30 @@ jobs:
                 #                    source: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
                 #                    target: /home/${{ secrets.VPS_USERNAME }}/app/
                 #                    timeout: 300s
-                uses: up9cloud/action-rsync@master
-                env:
-                    HOST: ${{ secrets.VPS_HOST }}
-                    KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                    TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
-                    VERBOSE: true
-                    USER: ${{ secrets.VPS_USERNAME }}
-                    SSH_ARGS: -p ${{ secrets.VPS_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=verbose
-                    ARGS: -az --exclude=/.git/
-                    SOURCE: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
-                    PRE_SCRIPT: |
-                        echo start at:
-                        date -u
-                    POST_SCRIPT: "echo done at: && date -u"
+
+                #                uses: up9cloud/action-rsync@master
+                #                env:
+                #                    HOST: ${{ secrets.VPS_HOST }}
+                #                    KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                #                    TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
+                #                    VERBOSE: true
+                #                    USER: ${{ secrets.VPS_USERNAME }}
+                #                    SSH_ARGS: -p ${{ secrets.VPS_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=verbose
+                #                    ARGS: -az --exclude=/.git/
+                #                    SOURCE: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
+                #                    PRE_SCRIPT: |
+                #                        echo start at:
+                #                        date -u
+                #                    POST_SCRIPT: "echo done at: && date -u"
+                uses: burnett01/rsync-deployments@5.2.1
+                with:
+                    switches: -avzr --delete
+                    path: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
+                    remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
+                    remote_host: ${{ secrets.VPS_HOST }}
+                    remote_port: ${{ secrets.VPS_PORT }}
+                    remote_user: ${{ secrets.VPS_USERNAME }}
+                    remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     deploy:
         needs: [ send-back-to-server, send-front-to-server ]
