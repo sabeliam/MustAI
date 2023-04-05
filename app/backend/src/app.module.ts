@@ -14,8 +14,6 @@ import {DescriptionModule} from './description/description.module';
         MongooseModule.forRootAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => {
-                console.log(configService.get('MONGODB_URI'))
-
                 return {
                     uri: configService.get('MONGODB_URI'),
                 }

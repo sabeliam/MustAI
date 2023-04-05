@@ -42,3 +42,11 @@ services:
         depends_on:
             - mongo
         command: mongo:27017
+
+    start-back:
+        container_name: mustai-start-infra
+        image: dadarek/wait-for-dependencies
+        depends_on:
+            - mongo
+            - backend
+        command: mongo:27017

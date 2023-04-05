@@ -48,15 +48,14 @@ export class AssistantComponent {
             )
             .subscribe({
                 next: (value) => {
+                    this.isLoading = false;
                     this.answer$.next([...this.answer$.getValue(), value]);
                 },
                 error: (error) => {
+                    this.isLoading = false;
                     console.error(error);
                     this.tuiAlertService
                         .open('Something went wrong :(', {status: TuiNotification.Error}).subscribe()
-                },
-                complete: () => {
-                    this.isLoading = false;
                 }
             });
     }
