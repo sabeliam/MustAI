@@ -109,11 +109,11 @@ jobs:
                 uses: up9cloud/action-rsync@master
                 env:
                     HOST: ${{ secrets.VPS_HOST }}
-                    KEY: ${{secrets.SSH_PRIVATE_KEY}}
+                    KEY: ${{ secrets.SSH_PRIVATE_KEY }}
                     TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
                     VERBOSE: true
                     USER: ${{ secrets.VPS_USERNAME }}
-                    PORT: ${{ secrets.VPS_PORT }}
+                    SSH_ARGS: -p ${{ secrets.VPS_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=verbose
                     ARGS: -az --exclude=/.git/
                     SOURCE: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
                     PRE_SCRIPT: |
@@ -147,11 +147,11 @@ jobs:
                 uses: up9cloud/action-rsync@master
                 env:
                     HOST: ${{ secrets.VPS_HOST }}
-                    KEY: ${{secrets.SSH_PRIVATE_KEY}}
+                    KEY: ${{ secrets.SSH_PRIVATE_KEY }}
                     TARGET: /home/${{ secrets.VPS_USERNAME }}/app/
                     VERBOSE: true
                     USER: ${{ secrets.VPS_USERNAME }}
-                    PORT: ${{ secrets.VPS_PORT }}
+                    SSH_ARGS: -p ${{ secrets.VPS_PORT }} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=verbose
                     ARGS: -az --exclude=/.git/
                     SOURCE: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
                     PRE_SCRIPT: |
