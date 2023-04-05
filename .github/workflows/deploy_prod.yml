@@ -89,7 +89,7 @@ jobs:
             -   name: Copy front artifact to server
                 uses: burnett01/rsync-deployments@5.2.1
                 with:
-                    switches: -avzr --update --ignore-existing
+                    switches: -avzr --delete
                     path: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
                     remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
                     remote_host: ${{ secrets.VPS_HOST }}
@@ -113,7 +113,7 @@ jobs:
             -   name: Copy back artifact to server
                 uses: burnett01/rsync-deployments@5.2.1
                 with:
-                    switches: -avzr --update --ignore-existing
+                    switches: -avzr --delete
                     path: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
                     remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
                     remote_host: ${{ secrets.VPS_HOST }}
@@ -131,7 +131,7 @@ jobs:
             -   name: Copy docker-compose.dev.yml to server
                 uses: burnett01/rsync-deployments@5.2.1
                 with:
-                    switches: -avzr --update --ignore-existing
+                    switches: -avzr --delete
                     path: ./build/docker-compose.prod.yml
                     remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
                     remote_host: ${{ secrets.VPS_HOST }}
