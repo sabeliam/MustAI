@@ -3,6 +3,7 @@ name: Deploy Prod
 env:
     DOCKER_IMAGE_BACK: mustai-back
     DOCKER_IMAGE_FRONT: mustai-front
+    MONGODB_URI: mongodb://mustai-mongo:27017
     OPEN_AI_SECRET: ${{ secrets.OPEN_AI_SECRET }}
     OPEN_AI_COMPLETION_URL: ${{ vars.OPEN_AI_COMPLETION_URL }}
     TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
