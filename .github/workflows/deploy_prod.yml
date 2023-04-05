@@ -1,4 +1,4 @@
-name: Deploy Prod
+name: Deploy PROD
 
 env:
     DOCKER_IMAGE_BACK: mustai-back
@@ -56,14 +56,20 @@ jobs:
             -   name: Checkout code
                 uses: actions/checkout@v3
 
+            -   name: Create env file
+                run: |
+                    cd app/backend
+                    touch .env
+                    echo OPEN_AI_SECRET=${{ secrets.OPEN_AI_SECRET }} >> .env
+                    echo TMDB_API_KEY=${{ secrets.TMDB_API_KEY }} >> .env
+                    echo MONGODB_URI=${{ vars.env.MONGODB_URI }} >> .env
+                    cat .env
+
             -   name: Build and save Docker images
                 run: |
                     docker build \
                     --tag $DOCKER_IMAGE_BACK \
-                    --file build/docker/back.build.dockerfile \
-                    --build-arg MONGODB_URI=${{ env.MONGODB_URI }} \
-                    --build-arg OPEN_AI_SECRET=${{ secrets.OPEN_AI_SECRET }} \
-                    --build-arg TMDB_API_KEY=${{ secrets.TMDB_API_KEY}} .
+                    --file build/docker/back.build.dockerfile .
                     docker save $DOCKER_IMAGE_BACK > $DOCKER_IMAGE_BACK.tar
 
 

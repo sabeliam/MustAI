@@ -1,12 +1,9 @@
-name: Deploy Prod
+name: Deploy DEV
 
 env:
-    DOCKER_IMAGE_BACK: mustai-back
-    DOCKER_IMAGE_FRONT: mustai-front
-    OPEN_AI_SECRET: ${{ secrets.OPEN_AI_SECRET }}
-    OPEN_AI_COMPLETION_URL: ${{ vars.OPEN_AI_COMPLETION_URL }}
-    TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-    API_URL: ${{ vars.API_URL }}
+    DOCKER_IMAGE_BACK: mustai-back-test
+    DOCKER_IMAGE_FRONT: mustai-front-test
+    MONGODB_URI: mongodb://mustai-mongo-test:27017
 on:
     # Runs on pushes targeting the default branch
     push:
@@ -62,15 +59,18 @@ jobs:
                 run: |
                     cd app/backend
                     touch .env
-                    echo MONGODB_URI=mongodb://mustai-mongo:27017 >> .env
                     echo OPEN_AI_SECRET=${{ secrets.OPEN_AI_SECRET }} >> .env
                     echo TMDB_API_KEY=${{ secrets.TMDB_API_KEY }} >> .env
+                    echo MONGODB_URI=${{ vars.env.MONGODB_URI }} >> .env
                     cat .env
 
             -   name: Build and save Docker images
                 run: |
-                    docker build --tag $DOCKER_IMAGE_BACK --file build/docker/back.build.dockerfile .
+                    docker build \
+                    --tag $DOCKER_IMAGE_BACK \
+                    --file build/docker/back.build.dockerfile .
                     docker save $DOCKER_IMAGE_BACK > $DOCKER_IMAGE_BACK.tar
+
 
             -   name: Upload artifacts
                 uses: actions/upload-artifact@v3
@@ -94,7 +94,7 @@ jobs:
             -   name: Copy front artifact to server
                 uses: burnett01/rsync-deployments@5.2.1
                 with:
-                    switches: -avzr --update --ignore-existing
+                    switches: -avzr --delete
                     path: ./artifacts/${{env.DOCKER_IMAGE_FRONT}}.tar
                     remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
                     remote_host: ${{ secrets.VPS_HOST }}
@@ -118,7 +118,7 @@ jobs:
             -   name: Copy back artifact to server
                 uses: burnett01/rsync-deployments@5.2.1
                 with:
-                    switches: -avzr --update --ignore-existing
+                    switches: -avzr --delete
                     path: ./artifacts/${{env.DOCKER_IMAGE_BACK}}.tar
                     remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
                     remote_host: ${{ secrets.VPS_HOST }}
@@ -137,7 +137,7 @@ jobs:
                 uses: burnett01/rsync-deployments@5.2.1
                 with:
                     switches: -avzr --update --ignore-existing
-                    path: ./build/docker-compose.prod.yml
+                    path: ./build/docker-compose.dev.yml
                     remote_path: /home/${{ secrets.VPS_USERNAME }}/app/
                     remote_host: ${{ secrets.VPS_HOST }}
                     remote_port: ${{ secrets.VPS_PORT }}
