@@ -10,12 +10,12 @@ import {
     RemoveFilm, UpdateComment,
     UpdateFilm,
 } from './films.actions';
-import {FilmsService} from '../services/films.service';
 import {tap} from 'rxjs';
 import {TuiAlertService, TuiNotification} from '@taiga-ui/core';
 import {patch, updateItem} from '@ngxs/store/operators';
 import {v4 as uuidv4} from 'uuid';
 import {AuthService} from '@core/auth/auth.service';
+import {FilmsClientService} from '../services/films-client.service';
 
 interface FilmsStateModel {
     films: Film[];
@@ -32,7 +32,7 @@ const defaultFilmsState: FilmsStateModel = {
 @Injectable()
 export class FilmsState {
     constructor(
-        private readonly filmsService: FilmsService,
+        private readonly filmsClientService: FilmsClientService,
         private readonly tuiAlertService: TuiAlertService,
         private readonly authService: AuthService
     ) {
@@ -60,8 +60,8 @@ export class FilmsState {
 
     @Action(GetFilms)
     getFilms(ctx: StateContext<FilmsStateModel>) {
-        return this.filmsService.getFilms().pipe(
-            tap((films) => {
+        return this.filmsClientService.getFilms().pipe(
+            tap((films = []) => {
                 const state = ctx.getState();
                 ctx.setState({
                     ...state,
@@ -135,7 +135,7 @@ export class FilmsState {
 
     @Action(AddFilm)
     addFilm(ctx: StateContext<FilmsStateModel>, action: AddFilm) {
-        return this.filmsService.addFilm(action.film).pipe(
+        return this.filmsClientService.addFilm(action.film).pipe(
             tap(() => {
                 const state = ctx.getState();
                 ctx.setState({
@@ -155,7 +155,7 @@ export class FilmsState {
 
     @Action(UpdateFilm)
     updateFilm(ctx: StateContext<FilmsStateModel>, action: UpdateFilm) {
-        return this.filmsService.patchFilm(action.film).pipe(
+        return this.filmsClientService.patchFilm(action.film).pipe(
             tap(() => {
                 ctx.setState(
                     patch({
@@ -171,7 +171,7 @@ export class FilmsState {
 
     @Action(RemoveFilm)
     removeFilm(ctx: StateContext<FilmsStateModel>, action: RemoveFilm) {
-        return this.filmsService.removeFilm(action.id).pipe(
+        return this.filmsClientService.removeFilm(action.id).pipe(
             tap(() => {
                 const state = ctx.getState();
                 ctx.setState({

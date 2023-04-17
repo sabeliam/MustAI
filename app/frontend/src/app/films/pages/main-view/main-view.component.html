@@ -1,21 +1,24 @@
 <div class="tui-container tui-container_adaptive">
     <h2 class="tui-text_h3 tui-space_vertical-5">Список фильмов</h2>
 
-    <app-search>Добавить фильм</app-search>
+    <div class="tui-space_bottom-2">
+        <app-search>Добавить фильм</app-search>
+    </div>
 
-    <tui-hosted-dropdown
-        #dropdown
-        [(open)]="dropdownOpen"
-        [content]="content"
-    >
-        <button
-            [icon]="(viewType$ | async)?.icon"
-            [pseudoHover]="dropdown.open || null"
-            appearance="flat"
-            tuiIconButton
-            type="button"
-        ></button>
-    </tui-hosted-dropdown>
+
+    <!--    <tui-hosted-dropdown-->
+    <!--        #dropdown-->
+    <!--        [(open)]="dropdownOpen"-->
+    <!--        [content]="content"-->
+    <!--    >-->
+    <!--        <button-->
+    <!--            [icon]="(viewType$ | async)?.icon"-->
+    <!--            [pseudoHover]="dropdown.open || null"-->
+    <!--            appearance="flat"-->
+    <!--            tuiIconButton-->
+    <!--            type="button"-->
+    <!--        ></button>-->
+    <!--    </tui-hosted-dropdown>-->
 
     <ng-template
         #content
@@ -62,21 +65,50 @@
 </ng-template>
 
 <ng-template #listView>
-    <ul class="list">
-        <li (click)="goToDetailed(film.id)" *ngFor="let film of (filmList$ | async)" class="list__item">
-            <div *ngIf="film.imgUrl" class="poster">
-                <img [src]="film.imgUrl" alt="img" class="responsive">
+    <ul (infiniteScroll)="onScroll()" class="list">
+        <li
+            #parent="tuiActiveZone"
+            (tuiActiveZoneChange)="onParentActiveZone($event)"
+            *ngFor="let film of (filmList$ | async)"
+            class="list__item">
+            <div
+                #element
+                (click)="goToDetailed(film.id)"
+                (tuiSwipe)="onSwipe($event, element)"
+                class="film__content"
+            >
+                <div *ngIf="film.imgUrl" class="film__poster">
+                    <img [src]="film.imgUrl" alt="img" class="responsive">
+                </div>
+
+                <div class="film__text">
+                    <p class="film__name">{{film.name}}</p>
+                    <p
+                        *ngIf="film.comments[0]?.comment"
+                        class="film__comment"
+                    >
+                        {{film.comments[0].comment}}
+                    </p>
+                </div>
+
+                <!--                <button-->
+                <!--                    (click)="removeFilm(film.id, $event)"-->
+                <!--                    appearance="flat"-->
+                <!--                    class="film__remove"-->
+                <!--                    icon="tuiIconTrashLarge"-->
+                <!--                    size="m"-->
+                <!--                    tuiIconButton-->
+                <!--                ></button>-->
             </div>
-
-            {{film.name}}
-
-            <button
-                (click)="removeFilm(film.id, $event)"
-                appearance="flat"
-                icon="tuiIconTrashLarge"
-                size="m"
-                tuiIconButton
-            ></button>
+            <div class="film__remove">
+                <button
+                    (click)="removeFilm(film.id, $event)"
+                    appearance="flat"
+                    icon="tuiIconTrashLarge"
+                    size="m"
+                    tuiIconButton
+                ></button>
+            </div>
         </li>
     </ul>
 </ng-template>

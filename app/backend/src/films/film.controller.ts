@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query, Req, UseGuards} from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
 import {FilmsService} from './film.service';
 import {Film, FilmDTO, IFilm} from './film.schema';
@@ -26,9 +26,14 @@ export class FilmsController {
 
     @UseGuards(AuthGuard('jwt'))
     @Get('list')
-    async getFilms(@Req() req): Promise<FilmDTO[]> {
+    async getFilms(
+        @Req() req,
+        @Query('pageNumber') pageNumber: number = 1,
+        @Query('pageSize') pageSize: number = 15
+    ): Promise<FilmDTO[]> {
         const {_id: sub} = req.user;
-        const films: Film[] = await this.filmsService.getFilmsByUser(sub)
+
+        const films: Film[] = await this.filmsService.getFilmsByUserByPages(sub, pageNumber, pageSize);
 
         return films.map(toDTOFilm)
     }

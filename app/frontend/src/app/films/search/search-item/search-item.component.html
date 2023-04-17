@@ -1,6 +1,6 @@
-<!--<div *ngIf="getImg(searchResult.poster_path)" class="poster">-->
-<!--    <img [src]="getImg(searchResult.poster_path)" alt="img" class="responsive" height="50" width="50">-->
-<!--</div>-->
+<div *ngIf="searchResult.poster_path && getImg(searchResult.poster_path) as posterImage" class="poster">
+    <img [src]="posterImage" alt="img" class="responsive" height="50" width="50">
+</div>
 
 <div class="answer-text">
     {{searchResult.original_title}}

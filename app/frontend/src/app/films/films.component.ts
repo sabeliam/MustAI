@@ -6,7 +6,7 @@ import {Film} from '@models';
 import {GetFilms, RemoveFilm} from './store/films.actions';
 import {TmdbClient} from '@core/description/tmdb/tmdb-client.service';
 import {FormControl} from '@angular/forms';
-import {FilmsService} from './services/films.service';
+import {FilmsClientService} from './services/films-client.service';
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus';
 import {FilmDialogComponent} from '@shared/components/film-dialog/film-dialog.component';
 import {TuiSheetService} from '@taiga-ui/addon-mobile';
@@ -23,7 +23,7 @@ import {slideInAnimation} from '@shared/animations/route-animation';
 })
 export class FilmsComponent implements OnInit {
     constructor(
-        private readonly filmsService: FilmsService,
+        private readonly filmsService: FilmsClientService,
         private readonly tuiSheetService: TuiSheetService,
         private readonly injector: Injector,
         private readonly store: Store,
@@ -42,9 +42,4 @@ export class FilmsComponent implements OnInit {
     ngOnInit() {
         this.store.dispatch(new GetFilms());
     }
-
-    // addFilm(): void {
-    //     // this.store.dispatch(new AddFilm(mockFilm()));
-    //     this.filmsService.getFilms().subscribe(console.log);
-    // }
 }

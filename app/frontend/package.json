@@ -3,7 +3,7 @@
     "version": "0.0.4",
     "scripts": {
         "ng": "ng",
-        "start": "npm run config -- --environment=prod && ng serve",
+        "start:front": "npm run config -- --environment=prod && ng serve",
         "build:ci": "npm run config -- --environment=prod && npm run build:prod",
         "build:prod": "ng build --configuration production",
         "build:stats": "npm run build --stats-json",

@@ -9,6 +9,8 @@ PROJECT_NAME=mustai
 # стопим если уже был запущен
 docker compose -f $COMPOSE_FILE -p $PROJECT_NAME down
 
+docker compose -f $COMPOSE_FILE -p $PROJECT_NAME build
+
 # запускаем
 docker compose -f $COMPOSE_FILE -p $PROJECT_NAME run --rm start-back
 

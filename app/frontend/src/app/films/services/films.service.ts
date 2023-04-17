@@ -3,43 +3,23 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Environment, Film} from '@models';
 import {ENVIRONMENT} from '@core/environment/environment';
+import {Store} from '@ngxs/store';
+import {AddFilm, RemoveFilm} from '../store/films.actions';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FilmsService {
-    private readonly apiUrl = `${this.env.apiUrl}/films`;
-
-
     constructor(
-        private readonly httpClient: HttpClient,
-        @Inject(ENVIRONMENT) private readonly env: Environment
+        private readonly store: Store
     ) {
     }
 
-    getFilms(): Observable<Film[]> {
-        return this.httpClient.get<Film[]>(`${this.apiUrl}/list`)
-            .pipe();
-    }
-
     addFilm(film: Film): Observable<any> {
-        return this.httpClient.post(`${this.apiUrl}/add`, film);
+        return this.store.dispatch(new AddFilm(film));
     }
 
-    patchFilm(film: Partial<Film>): Observable<any> {
-        return this.httpClient.patch(`${this.apiUrl}/edit/${film.id}`, film);
+    removeFilm(filmId: string): Observable<any> {
+        return this.store.dispatch(new RemoveFilm(filmId));
     }
-
-    removeFilm(id: string): Observable<any> {
-        return this.httpClient.delete(`${this.apiUrl}/remove/${id}`);
-    }
-
-    //
-    // addComment(comment: Comment): Observable<any> {
-    //     return this.httpClient.post<Film[]>(this.commentsUrl, comment);
-    // }
-    //
-    // removeComment(id: string): Observable<any> {
-    //     return this.httpClient.delete<Film[]>(`${this.commentsUrl}/${id}`);
-    // }
 }

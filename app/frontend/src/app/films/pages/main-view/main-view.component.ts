@@ -20,7 +20,7 @@ import {
 } from '@taiga-ui/core';
 import {TUI_PROMPT} from '@taiga-ui/kit';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
-import {TuiDestroyService} from '@taiga-ui/cdk';
+import {TuiDestroyService, TuiSwipe} from '@taiga-ui/cdk';
 
 interface View {
     value: ViewType;
@@ -118,6 +118,22 @@ export class MainViewComponent {
 
     goToDetailed(id: string) {
         this.router.navigate(['library', 'detailed', id]).then();
+    }
+
+    onScroll() {
+
+    }
+
+    onSwipe(swipe: TuiSwipe, element: HTMLElement) {
+        if (swipe.direction === 'left') {
+            // this.toggle(false);
+            console.log(swipe, element)
+            element.classList.add('delete');
+        }
+    }
+
+    onParentActiveZone(active: any) {
+        console.log('chanege', active);
     }
 
 }

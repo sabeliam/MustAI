@@ -1,13 +1,15 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CardComponent } from './components/card/card.component';
-import { TuiIslandModule } from '@taiga-ui/kit';
-import { TuiButtonModule } from '@taiga-ui/core';
-import { FilmDialogComponent } from './components/film-dialog/film-dialog.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {CardComponent} from './components/card/card.component';
+import {TuiIslandModule} from '@taiga-ui/kit';
+import {TuiButtonModule} from '@taiga-ui/core';
+import {FilmDialogComponent} from './components/film-dialog/film-dialog.component';
+import {InfiniteScrollDirective} from '@shared/directives/infinite-scroll.directive';
 
 @NgModule({
-    declarations: [CardComponent, FilmDialogComponent],
+    declarations: [CardComponent, FilmDialogComponent, InfiniteScrollDirective],
     imports: [CommonModule, TuiIslandModule, TuiButtonModule],
-    exports: [CardComponent],
+    exports: [CardComponent, InfiniteScrollDirective],
 })
-export class SharedModule {}
+export class SharedModule {
+}

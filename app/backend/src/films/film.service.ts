@@ -13,7 +13,7 @@ export class FilmsService {
     }
 
     async addFilmToUser(userId: string, film: IFilm): Promise<Film> {
-        const filmModel = await this.filmModel.create({...film, user: userId});
+        const filmModel = await this.filmModel.create({...film});
 
         await this.userModel.findByIdAndUpdate(userId, {$addToSet: {films: filmModel._id}});
         return filmModel;
@@ -31,6 +31,38 @@ export class FilmsService {
     }
 
     async getFilmsByUser(userId: string): Promise<Film[]> {
-        return this.filmModel.find({user: userId}).exec()
+        const user = await this.userModel.findById(userId).lean().exec();
+        if (!user) {
+            // Обработка случая, когда пользователь не найден
+            return null;
+        }
+
+        // Получение фильмов по массиву id из поля films модели User
+        const films = await this.filmModel.find({_id: {$in: user.films}}).lean().exec();
+
+        return films;
     }
+
+    async getFilmsByUserByPages(userId: string, pageNumber: number, pageSize: number): Promise<Film[]> {
+        const user = await this.userModel.findById(userId).lean().exec();
+        if (!user) {
+            // Обработка случая, когда пользователь не найден
+            return null;
+        }
+
+        // Рассчитываем количество фильмов, которые нужно пропустить (skip) и сколько фильмов нужно вернуть (limit)
+        const skip = (pageNumber - 1) * pageSize;
+        const limit = pageSize;
+
+        // Получение фильмов по массиву id из поля films модели User с использованием skip и limit
+        const films = await this.filmModel
+            .find({_id: {$in: user.films}})
+            .skip(skip)
+            .limit(limit)
+            .lean()
+            .exec();
+
+        return films;
+    }
+
 }

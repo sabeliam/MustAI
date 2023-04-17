@@ -21,6 +21,7 @@ import {DescriptionService} from '@core/description/description.service';
 import {TuiSheetService} from '@taiga-ui/addon-mobile';
 import {FilmDialogComponent} from '@shared/components/film-dialog/film-dialog.component';
 import {fromSearchResultToFilm} from '@shared/utils/filmDTO';
+import {FilmsService} from '../../films/services/films.service';
 
 @Component({
     selector: 'app-assistant-answer',
@@ -38,7 +39,7 @@ export class AssistantAnswerComponent {
         private readonly tuiSheetService: TuiSheetService,
         private readonly tuiDialogService: TuiDialogService,
         private readonly tuiAlertService: TuiAlertService,
-        private readonly store: Store,
+        private readonly filmsService: FilmsService,
         private readonly injector: Injector,
         @Inject(TUI_IS_MOBILE_RES)
         private readonly isMobileRes$: Observable<boolean>
@@ -89,7 +90,11 @@ export class AssistantAnswerComponent {
     addFilm() {
         this.getDescription(this.answer).subscribe((value) => {
             if (value) {
-                this.store.dispatch(new AddFilm(fromSearchResultToFilm(value)));
+                const film: Film = fromSearchResultToFilm(value);
+
+                debugger
+
+                this.filmsService.addFilm(film).subscribe()
             }
         });
     }

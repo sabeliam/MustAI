@@ -58,7 +58,7 @@ import {MainModule} from './main/main.module';
         FilmsModule,
         TmdbModule,
         CompletionModule,
-        NgxsModule.forRoot(),
+        NgxsModule.forRoot([]),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: !isDevMode(),
             // Register the ServiceWorker as soon as the application is stable

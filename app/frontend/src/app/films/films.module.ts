@@ -20,7 +20,7 @@ import {
 } from '@taiga-ui/kit';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MainViewComponent} from './pages/main-view/main-view.component';
-import {TuiActiveZoneModule, TuiAutoFocusModule, TuiLetModule} from '@taiga-ui/cdk';
+import {TuiActiveZoneModule, TuiAutoFocusModule, TuiLetModule, TuiSwipeModule} from '@taiga-ui/cdk';
 import {DetailedViewComponent} from './pages/detailed-view/detailed-view.component';
 import {FilmsRoutingModule} from './films-routing.module';
 import {SearchComponent} from './search/search.component';
@@ -51,7 +51,8 @@ import {FilmsState} from './store/films.state';
         TuiScrollbarModule,
         TuiPrimitiveTextfieldModule,
         TuiAutoFocusModule,
-        NgxsModule.forRoot([FilmsState]),
+        NgxsModule.forFeature([FilmsState]),
+        TuiSwipeModule,
     ],
     exports: [FilmsComponent],
 })
