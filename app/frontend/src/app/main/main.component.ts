@@ -1,6 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {AuthService} from '@core/auth/auth.service';
-import {TuiDialogService} from '@taiga-ui/core';
+import {AuthService} from '@core/auth';
+import {Select, Store} from '@ngxs/store';
+import {UserState} from '@core/user/store/user.state';
+import {Observable} from 'rxjs';
+import {User} from '@models/user';
 
 @Component({
     selector: 'app-main',
@@ -9,11 +12,12 @@ import {TuiDialogService} from '@taiga-ui/core';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainComponent {
-    user$ = this.authService.user$;
+    @Select(UserState.currentUser) public user$: Observable<User>;
 
     opened = false;
 
     constructor(
+        private readonly store: Store,
         private readonly authService: AuthService
     ) {
     }

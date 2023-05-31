@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
+import {Action, createSelector, NgxsOnInit, Selector, State, StateContext, Store} from '@ngxs/store';
 import {Film} from '@models';
 import {Comment} from '@models/comment';
 import {
-    AddComment,
-    AddFilm, ClearStore,
+    AddFilm, ClearFilms,
     GetFilms,
     RemoveComment,
     RemoveFilm, SelectCurrentFilm, UpdateComment,
@@ -14,8 +13,10 @@ import {tap} from 'rxjs';
 import {TuiAlertService, TuiNotification} from '@taiga-ui/core';
 import {patch, updateItem} from '@ngxs/store/operators';
 import {v4 as uuidv4} from 'uuid';
-import {AuthService} from '@core/auth/auth.service';
+import {AuthService} from '@core/auth';
 import {FilmsClientService} from '../services/films-client.service';
+import {UserState, UserStateModel} from '@core/user/store/user.state';
+import {User} from '@models/user';
 
 interface FilmsStateModel {
     films: Film[];
@@ -27,6 +28,11 @@ const defaultFilmsState: FilmsStateModel = {
     selectedFilmId: null,
 };
 
+// export const getUserName = createSelector(
+//     [UserState],
+//     (userState: UserStateModel) => userState.currentUser
+// );
+
 @State<FilmsStateModel>({
     name: 'films',
     defaults: defaultFilmsState,
@@ -36,7 +42,8 @@ export class FilmsState {
     constructor(
         private readonly filmsClientService: FilmsClientService,
         private readonly tuiAlertService: TuiAlertService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly store: Store
     ) {
     }
 
@@ -59,7 +66,7 @@ export class FilmsState {
         return state.films.find((film) => film.id === state.selectedFilmId) || null;
     }
 
-    @Action(ClearStore)
+    @Action(ClearFilms)
     clearStore({setState}: StateContext<FilmsStateModel>): FilmsStateModel {
         console.log('clearStore', defaultFilmsState)
         return setState(defaultFilmsState);
@@ -108,7 +115,7 @@ export class FilmsState {
             comment = {
                 id: uuidv4(),
                 comment: action.comment,
-                author: this.authService.currentUserUsername,
+                author: this.store.selectSnapshot<User>(UserState).username,
                 date: new Date(),
                 filmId: film.id
             }

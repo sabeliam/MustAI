@@ -34,6 +34,7 @@ import {TuiActiveZoneModule, TuiSwipeService} from '@taiga-ui/cdk';
 import {TuiSheetModule} from '@taiga-ui/addon-mobile';
 import {AuthModule} from '@core/auth/auth.module';
 import {MainModule} from './main/main.module';
+import {UserState} from '@core/user/store/user.state';
 
 @NgModule({
     declarations: [AppComponent],
@@ -58,7 +59,7 @@ import {MainModule} from './main/main.module';
         FilmsModule,
         TmdbModule,
         CompletionModule,
-        NgxsModule.forRoot([]),
+        NgxsModule.forRoot([UserState]),
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: !isDevMode(),
             // Register the ServiceWorker as soon as the application is stable

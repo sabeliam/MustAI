@@ -1,8 +1,7 @@
 import {Film} from '@models';
-import {Comment} from '@models/comment';
 
-export class ClearStore {
-    static readonly type = '[Films] ClearStore'
+export class ClearFilms {
+    static readonly type = '[Films] ClearFilms'
 }
 
 export class GetFilms {

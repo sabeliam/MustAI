@@ -1,9 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {UserDTO} from '@core/auth/auth.model';
+import {UserDTO, AuthService} from '@core/auth';
 import {TuiAlertService, TuiNotification} from '@taiga-ui/core';
-import {AuthService} from '@core/auth/services/auth.service';
 
 export type ModelFormGroup<T> = FormGroup<{
     [K in keyof T]: FormControl<T[K]>;
