@@ -1,10 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '@core/auth/auth.service';
 import {Router} from '@angular/router';
 import {UserDTO} from '@core/auth/auth.model';
 import {TuiAlertService, TuiNotification} from '@taiga-ui/core';
-import {catchError, throwError} from 'rxjs';
+import {AuthService} from '@core/auth/services/auth.service';
 
 export type ModelFormGroup<T> = FormGroup<{
     [K in keyof T]: FormControl<T[K]>;
@@ -42,7 +41,7 @@ export class AuthComponent {
                     this.router.navigateByUrl('')
                 },
                 error: err => {
-                    this.tuiAlertService.open('username уже зарегистрирован', {
+                    this.tuiAlertService.open('Username уже зарегистрирован', {
                         status: TuiNotification.Error
                     }).subscribe()
 

@@ -4,9 +4,10 @@ import {UserDTO} from '@core/auth/auth.model';
 import {BehaviorSubject, map, Observable, tap} from 'rxjs';
 import {Router} from '@angular/router';
 import {Store} from '@ngxs/store';
-import {ClearStore, GetFilms} from '../../films/store/films.actions';
 import {ENVIRONMENT} from '@core/environment/environment';
 import {Environment} from '@models';
+import {ACCESS_TOKEN_NAME} from '@core/auth/constants/access_token';
+import {ClearStore, GetFilms} from '../../../films/store/films.actions';
 
 export interface User {
     username: string;
@@ -17,8 +18,6 @@ export interface AuthDTO {
     user: User,
     access_token: string;
 }
-
-const ACCESS_TOKEN_NAME = 'must_ai_access_token';
 
 @Injectable({
     providedIn: 'root'
