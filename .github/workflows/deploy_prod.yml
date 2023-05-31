@@ -163,4 +163,4 @@ jobs:
                         docker compose -f docker-compose.prod.yml down
                         docker load -i ${{ env.DOCKER_IMAGE_FRONT }}.tar
                         docker load -i ${{ env.DOCKER_IMAGE_BACK }}.tar
-                        docker compose -f docker-compose.prod.yml up
+                        docker compose -f docker-compose.prod.yml up -d
