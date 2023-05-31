@@ -7,6 +7,8 @@ import {TmdbClient} from '@core/description/tmdb/tmdb-client.service';
 import {PolymorpheusContent} from '@tinkoff/ng-polymorpheus';
 import {fadeInList} from '@shared/animations/fade-in-list-animation';
 
+export type FilmResponse = { genre: string, title: string, author: string }
+
 @Component({
     selector: 'app-assistant',
     templateUrl: './assistant.component.html',
@@ -18,7 +20,7 @@ export class AssistantComponent {
     input = new FormControl<string>('');
     isLoading = false;
 
-    answer$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+    answer$: BehaviorSubject<FilmResponse[]> = new BehaviorSubject<FilmResponse[]>([]);
 
     constructor(
         private readonly openaiService: CompletionService,
@@ -33,14 +35,15 @@ export class AssistantComponent {
         }
 
         this.isLoading = true;
+
         this.openaiService
             .getResponse(this.input.value)
             .pipe(
                 map((value: { text: string }) => value.text || ''),
-                switchMap((value: string) => from(this.getListFromText(value))),
+                map(value => this.getListFromText(value)),
                 tap((value) => {
                     this.isLoading = false;
-                    this.answer$.next([...this.answer$.getValue(), value]);
+                    this.answer$.next(value);
                 }),
                 catchError((error) => {
                     this.isLoading = false;
@@ -54,28 +57,42 @@ export class AssistantComponent {
             .subscribe();
     }
 
-    getListFromText(text: string | undefined): string[] {
+
+    getListFromText(text: string | undefined): FilmResponse[] {
         if (!text) {
             return [];
         }
 
-        return text
-            .split('\n')
-            .filter((value) => !(value === '' || value === ' '));
+        try {
+            const json = JSON.parse(text);
+
+            if (json.every((film: any) => film.genre && film.title && film.author)) {
+                return json as FilmResponse[];
+            } else {
+                console.error('Wrong json format');
+
+                this.tuiAlertService.open('Something went wrong :(', {
+                    status: TuiNotification.Error
+                }).subscribe();
+
+                return [];
+            }
+        } catch (e) {
+            console.error(e);
+
+            this.tuiAlertService.open('Something went wrong :(', {
+                status: TuiNotification.Error
+            }).subscribe();
+        }
+
+        return [];
+
+        // return text
+        //     .split('\n')
+        //     .filter((value) => !(value === '' || value === ' '));
     }
 
     toggle(text: string, content: PolymorpheusContent<TuiDialogContext>) {
-        // this.openSideBar = !this.openSideBar;
-        // this.getDescription(text)
-        //     .pipe(
-        //         map((value) => this.getItem(value)),
-        //         switchMap((value) => {
-        //             return this.dialogService.open(content, {
-        //                 data: value,
-        //                 closeable: true,
-        //             });
-        //         })
-        //     )
-        //     .subscribe();
+
     }
 }

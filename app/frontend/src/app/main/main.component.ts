@@ -10,13 +10,11 @@ import {TuiDialogService} from '@taiga-ui/core';
 })
 export class MainComponent {
     user$ = this.authService.user$;
-    title = 'MustAI';
 
     opened = false;
 
     constructor(
-        private readonly authService: AuthService,
-        private readonly tuiDialogService: TuiDialogService
+        private readonly authService: AuthService
     ) {
     }
 

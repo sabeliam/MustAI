@@ -1,6 +1,3 @@
-<!--<pre>-->
-<!--    {{film$ | async | json}}-->
-<!--</pre>-->
 <div class="tui-container tui-container_adaptive">
     <ng-container *ngIf="film$ | async as film">
         <div *ngIf="film.imgUrl" class="poster">
@@ -17,27 +14,6 @@
 
 
         <h6 class="tui-text_h6 tui-space_vertical-4">Коммментарий</h6>
-
-        <!--        <ul @fadeInList [@.disabled]="animationDisabled" class="comments">-->
-        <!--            <li *ngFor="let comment of (film$ | async)?.comments" class="comment">-->
-        <!--                <button-->
-        <!--                    (click)="deleteComment(comment.id)"-->
-        <!--                    appearance="icon"-->
-        <!--                    class="comment__delete"-->
-        <!--                    icon="tuiIconTrash"-->
-        <!--                    size="s"-->
-        <!--                    tuiIconButton-->
-        <!--                ></button>-->
-
-        <!--                <p class="comment__text">{{comment.comment}}</p>-->
-        <!--                <div class="comment__footer">-->
-        <!--                    <span>{{comment.author}}</span>-->
-        <!--                    ·-->
-        <!--                    <span>{{comment.date | tuiFormatDate | async}}</span>-->
-        <!--                </div>-->
-        <!--            </li>-->
-        <!--        </ul>-->
-
 
         <tui-text-area
             [formControl]="input"

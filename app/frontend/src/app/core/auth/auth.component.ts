@@ -4,6 +4,7 @@ import {AuthService} from '@core/auth/auth.service';
 import {Router} from '@angular/router';
 import {UserDTO} from '@core/auth/auth.model';
 import {TuiAlertService, TuiNotification} from '@taiga-ui/core';
+import {catchError, throwError} from 'rxjs';
 
 export type ModelFormGroup<T> = FormGroup<{
     [K in keyof T]: FormControl<T[K]>;

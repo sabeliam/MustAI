@@ -12,9 +12,7 @@ import {
     TuiDialogService,
     TuiNotification,
 } from '@taiga-ui/core';
-import {map, Observable, of, switchMap, withLatestFrom} from 'rxjs';
-import {Store} from '@ngxs/store';
-import {AddFilm} from '../../films/store/films.actions';
+import {catchError, map, Observable, of, switchMap, tap, withLatestFrom} from 'rxjs';
 import {Film} from '@models';
 import {Answer, SearchResult, TmdbMovie, TmdbTv} from '@models/tmdb';
 import {DescriptionService} from '@core/description/description.service';
@@ -22,6 +20,7 @@ import {TuiSheetService} from '@taiga-ui/addon-mobile';
 import {FilmDialogComponent} from '@shared/components/film-dialog/film-dialog.component';
 import {fromSearchResultToFilm} from '@shared/utils/filmDTO';
 import {FilmsService} from '../../films/services/films.service';
+import {FilmResponse} from '../assistant.component';
 
 @Component({
     selector: 'app-assistant-answer',
@@ -30,7 +29,7 @@ import {FilmsService} from '../../films/services/films.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssistantAnswerComponent {
-    @Input() answer!: string;
+    @Input() answer!: FilmResponse;
 
     openSideBar = false;
 
@@ -46,31 +45,19 @@ export class AssistantAnswerComponent {
     ) {
     }
 
-    extractName(string: string): string | null {
-        const array = string.match(/(?<=\d. )(.*)(?= \(\d*\))/);
-
-        return array && array[0];
-    }
-
     getDescription(text: string): Observable<SearchResult | null> {
-        const name = this.extractName(text);
-
-        if (!name) {
-            return of(null);
-        }
-
-        return this.descriptionService.findFirstFilmByName(name);
+        return this.descriptionService.findFirstFilmByName(text);
     }
 
     showDialog() {
-        this.getDescription(this.answer)
+        this.getDescription(this.answer.title)
             .pipe(
                 switchMap((value) => {
-                    if (!value) {
-                        return this.tuiAlertService.open('Ошибка', {
-                            status: TuiNotification.Error,
-                        });
+                    if (value === null) {
+                        return this.showFilmNotFoundError();
                     }
+
+                    const film: Film = fromSearchResultToFilm(value);
 
                     return this.tuiDialogService.open(
                         new PolymorpheusComponent(
@@ -78,7 +65,7 @@ export class AssistantAnswerComponent {
                             this.injector
                         ),
                         {
-                            data: fromSearchResultToFilm(value) as any,
+                            data: film as any,
                             closeable: true,
                         }
                     );
@@ -87,15 +74,34 @@ export class AssistantAnswerComponent {
             .subscribe();
     }
 
-    addFilm() {
-        this.getDescription(this.answer).subscribe((value) => {
-            if (value) {
+    addFilm(): void {
+        this.getDescription(this.answer.title).pipe(
+            switchMap(value => {
+                if (value === null) {
+                    return this.showFilmNotFoundError();
+                }
+
                 const film: Film = fromSearchResultToFilm(value);
 
-                debugger
+                return this.filmsService.addFilm(film);
+            }),
+            catchError((err) => {
+                console.error(err);
 
-                this.filmsService.addFilm(film).subscribe()
-            }
+                return this.showErrorNotification();
+            })
+        ).subscribe();
+    }
+
+    private showFilmNotFoundError() {
+        return this.tuiAlertService.open('Фильм не найден', {
+            status: TuiNotification.Warning,
+        });
+    }
+
+    private showErrorNotification() {
+        return this.tuiAlertService.open('Ошибка', {
+            status: TuiNotification.Error,
         });
     }
 }

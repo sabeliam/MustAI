@@ -1,3 +1,18 @@
+@header-height: 3.9375rem;
+@full-height: calc(var(--vh) * 100);
+
+.page {
+    padding-top: 4rem;
+    padding-bottom: 1rem;
+}
+
+.content > * {
+    height: calc(@full-height - @header-height);
+    position: fixed;
+    top: @header-height;
+    left: 0;
+    overflow-y: auto;
+}
 
 .user {
     margin-left: auto;

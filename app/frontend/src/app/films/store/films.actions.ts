@@ -16,6 +16,13 @@ export class AddFilm {
     }
 }
 
+export class SelectCurrentFilm {
+    static readonly type = '[Films] SelectCurrentFilm';
+
+    constructor(public filmId: string) {
+    }
+}
+
 export class UpdateFilm {
     static readonly type = '[Films] UpdateFilm';
 
@@ -33,14 +40,14 @@ export class RemoveFilm {
 export class UpdateComment {
     static readonly type = '[Comments] UpdateComment';
 
-    constructor(public filmId: string, public comment: string) {
+    constructor(public comment: string) {
     }
 }
 
 export class AddComment {
     static readonly type = '[Comments] AddComment';
 
-    constructor(public filmId: string, public comment: string) {
+    constructor(public comment: string) {
     }
 }
 

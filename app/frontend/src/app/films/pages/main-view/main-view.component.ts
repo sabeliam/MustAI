@@ -21,6 +21,7 @@ import {
 import {TUI_PROMPT} from '@taiga-ui/kit';
 import {distinctUntilChanged, filter} from 'rxjs/operators';
 import {TuiDestroyService, TuiSwipe} from '@taiga-ui/cdk';
+import {FilmsService} from '../../services/films.service';
 
 interface View {
     value: ViewType;
@@ -87,7 +88,8 @@ export class MainViewComponent {
         private readonly router: Router,
         private readonly dialogService: TuiDialogService,
         private readonly tuiAlertService: TuiAlertService,
-        private readonly tuiDestroyService: TuiDestroyService
+        private readonly tuiDestroyService: TuiDestroyService,
+        private readonly filmsService: FilmsService
     ) {
     }
 
@@ -100,7 +102,7 @@ export class MainViewComponent {
             .pipe(
                 filter(Boolean),
                 switchMap(() => {
-                    return this.store.dispatch(new RemoveFilm(id));
+                    return this.filmsService.removeFilm(id);
                 }),
                 switchMap(() => {
                     return this.tuiAlertService.open(`film removed`, {

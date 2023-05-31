@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MainComponent} from './main.component';
-import {TuiDataListModule, TuiHostedDropdownModule, TuiSvgModule} from '@taiga-ui/core';
+import {TuiDataListModule, TuiHostedDropdownModule, TuiRootModule, TuiSvgModule} from '@taiga-ui/core';
 import {TuiDocHeaderModule} from '../header/header.module';
 import {RouterOutlet} from '@angular/router';
 
@@ -14,7 +14,8 @@ import {RouterOutlet} from '@angular/router';
         TuiHostedDropdownModule,
         TuiDocHeaderModule,
         RouterOutlet,
-        TuiSvgModule
+        TuiSvgModule,
+        TuiRootModule
     ]
 })
 export class MainModule {

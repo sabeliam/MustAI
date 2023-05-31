@@ -21,6 +21,7 @@ export class AppComponent {
         private readonly openaiService: CompletionService,
         private readonly tuiAlertService: TuiAlertService,
     ) {
+        this.initCssVar();
     }
 
     getMicrophone() {
@@ -42,5 +43,18 @@ export class AppComponent {
                 )
             )
             .subscribe(console.log);
+    }
+
+    updateCssVar(value: number): void {
+        document.documentElement.style.setProperty(
+            '--vh',
+            `${value}px`
+        )
+    }
+
+    initCssVar(): void {
+        window.addEventListener('orientationchange', () => {
+            this.updateCssVar(window.innerHeight * 0.01);
+        })
     }
 }

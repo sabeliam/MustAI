@@ -18,6 +18,8 @@ export interface AuthDTO {
     access_token: string;
 }
 
+const ACCESS_TOKEN_NAME = 'must_ai_access_token';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -51,7 +53,7 @@ export class AuthService {
     }
 
     public isAuthenticated(): boolean {
-        const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem(ACCESS_TOKEN_NAME);
 
         return !!token;
     }
@@ -59,7 +61,7 @@ export class AuthService {
     public register(user: UserDTO): Observable<{ access_token: string }> {
         return this.httpClient.post<AuthDTO>(`${this.apiUrl}/auth/register`, user)
             .pipe(tap(value => {
-                localStorage.setItem('access_token', value.access_token);
+                localStorage.setItem(ACCESS_TOKEN_NAME, value.access_token);
                 this.currentUser$.next(value.user)
                 this.store.dispatch(new GetFilms());
             }));
@@ -69,7 +71,7 @@ export class AuthService {
         return this.httpClient.post<AuthDTO>(`${this.apiUrl}/auth/login`, user)
             .pipe(tap(value => {
                 this.currentUser$.next(value.user)
-                localStorage.setItem('access_token', value.access_token);
+                localStorage.setItem(ACCESS_TOKEN_NAME, value.access_token);
                 this.store.dispatch(new GetFilms());
             }));
     }
@@ -78,9 +80,9 @@ export class AuthService {
         return this.httpClient.post<AuthDTO>(`${this.apiUrl}/auth/logout`, {})
             .pipe(tap(value => {
                 this.currentUser$.next(null)
-                localStorage.removeItem('access_token');
+                localStorage.removeItem(ACCESS_TOKEN_NAME);
                 this.store.dispatch(new ClearStore())
-                // this.router.navigateByUrl('auth')
+                this.router.navigateByUrl('auth');
             }));
     }
 }

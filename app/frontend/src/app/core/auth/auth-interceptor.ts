@@ -16,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (req.url.includes('/api')) {
+        if (req.url.includes('/api') && !req.url.includes('/api/auth')) {
             const headers = new HttpHeaders({
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`,

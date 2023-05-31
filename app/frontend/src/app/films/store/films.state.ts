@@ -7,7 +7,7 @@ import {
     AddFilm, ClearStore,
     GetFilms,
     RemoveComment,
-    RemoveFilm, UpdateComment,
+    RemoveFilm, SelectCurrentFilm, UpdateComment,
     UpdateFilm,
 } from './films.actions';
 import {tap} from 'rxjs';
@@ -19,10 +19,12 @@ import {FilmsClientService} from '../services/films-client.service';
 
 interface FilmsStateModel {
     films: Film[];
+    selectedFilmId: string | null;
 }
 
 const defaultFilmsState: FilmsStateModel = {
     films: [],
+    selectedFilmId: null,
 };
 
 @State<FilmsStateModel>({
@@ -50,6 +52,11 @@ export class FilmsState {
         return (id: string) => {
             return state.films.find((film) => film.id === id) || null;
         };
+    }
+
+    @Selector()
+    public static currentFilm(state: FilmsStateModel): Film | null {
+        return state.films.find((film) => film.id === state.selectedFilmId) || null;
     }
 
     @Action(ClearStore)
@@ -88,9 +95,8 @@ export class FilmsState {
 
     @Action(UpdateComment)
     updateComment(ctx: StateContext<FilmsStateModel>, action: UpdateComment) {
-        const film = ctx
-            .getState()
-            .films.find((film) => film.id === action.filmId);
+        const state = ctx.getState();
+        const film = state.films.find((film) => film.id === state.selectedFilmId);
 
         if (!film) {
             return;
@@ -104,7 +110,7 @@ export class FilmsState {
                 comment: action.comment,
                 author: this.authService.currentUserUsername,
                 date: new Date(),
-                filmId: action.filmId
+                filmId: film.id
             }
 
             film.comments.push(comment);
@@ -167,6 +173,16 @@ export class FilmsState {
                 );
             })
         );
+    }
+
+    @Action(SelectCurrentFilm)
+    selectCurrentFilm(ctx: StateContext<FilmsStateModel>, action: SelectCurrentFilm) {
+        const state = ctx.getState();
+
+        ctx.setState({
+            ...state,
+            selectedFilmId: action.filmId,
+        });
     }
 
     @Action(RemoveFilm)

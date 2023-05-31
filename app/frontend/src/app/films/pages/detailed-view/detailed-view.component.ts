@@ -20,12 +20,14 @@ import {TuiAlertService, TuiNotification} from '@taiga-ui/core';
 })
 export class DetailedViewComponent {
     animationDisabled = true;
-    film$: Observable<Film | null> = this.getCurrentFilm$();
+    // film$: Observable<Film | null> = this.getCurrentFilm$();
+
     currentFilmId: string;
 
     input = new FormControl<string>('');
 
-    @Select(FilmsState.filmList) films$: Observable<Film[]>;
+    // @Select(FilmsState.filmList) films$: Observable<Film[]>;
+    @Select(FilmsState.currentFilm) film$: Observable<Film>;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -36,30 +38,10 @@ export class DetailedViewComponent {
     ) {
     }
 
-    getCurrentFilm$(): Observable<Film | null> {
-        return this.route.paramMap.pipe(
-            switchMap((params: ParamMap) => {
-                const id = params.get('id');
-
-                if (id === null) {
-                    this.router.navigateByUrl('library');
-
-                    return of(null);
-                }
-
-                this.currentFilmId = id;
-
-                return this.films$.pipe(
-                    map((films) => {
-                        const film = films.find((film) => film.id === id);
-
-                        this.input.setValue(film?.comments[0]?.comment || '')
-
-                        return film ?? null;
-                    })
-                );
-            })
-        );
+    ngOnInit() {
+        this.film$.subscribe(film => {
+            this.input.setValue(film?.comments[0]?.comment || '');
+        })
     }
 
     addComment() {
@@ -69,19 +51,10 @@ export class DetailedViewComponent {
         }
 
         const comment = this.input.value;
-        //
-        // const comment: Comment = {
-        //     author: 'Bob',
-        //     comment: this.input.value,
-        //     date: new Date(),
-        //     filmId: this.currentFilmId,
-        //     id: uuidv4(),
-        // };
 
         this.store
-            .dispatch(new UpdateComment(this.currentFilmId, comment))
+            .dispatch(new UpdateComment(comment))
             .subscribe(() => {
-                // this.input.reset();
                 this.tuiAlertService
                     .open(`comment added`, {
                         status: TuiNotification.Success,

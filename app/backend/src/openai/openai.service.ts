@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {OpenAIApi, Configuration, CreateCompletionRequest} from 'openai';
+import {Configuration, CreateCompletionRequest, OpenAIApi} from 'openai';
 
 enum Model {
     Сurie = 'text-curie-001',
@@ -21,7 +21,13 @@ export class OpenaiService {
     }
 
     async getCompletion(ask: string): Promise<any> {
-        const prompt = `Give me list of films with tags: ${ask}, add to list their imdb id`;
+        const prompt = `
+        generate a list of 10 films with authors and genres with tags that i provide, tags delimited by triple quotes
+        respond only with JSON, do not add comments, only plain JSON
+            '''${ask}'''
+
+        Provide them in JSON format with the following keys:
+        title, author, genre.`
 
         const options: CreateCompletionRequest = {
             model: Model.Davinci,

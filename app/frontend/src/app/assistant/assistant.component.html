@@ -19,8 +19,8 @@
             <!--                </button>-->
             <!--            </div>-->
             <!--        </div>-->
-            <div @fadeInList class="container">
-                <div *ngFor="let answer of answers" class="answer">
+            <div @fadeInList class="list">
+                <div *ngFor="let answer of answers" class="list__item">
                     <app-assistant-answer [answer]="answer"></app-assistant-answer>
                     <!--                <app-card-->
                     <!--                    [category]="'movie'"-->

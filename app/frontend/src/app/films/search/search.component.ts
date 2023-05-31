@@ -48,9 +48,11 @@ export class SearchComponent implements OnInit {
                 takeUntil(this.destroy$),
                 switchMap(value => {
                     if (value.length > 3) {
+                        this.open = true;
                         return this.descriptionService.findFilmByName(value)
                     }
 
+                    this.open = false;
                     return of({results: []})
                 })
             )
@@ -67,13 +69,12 @@ export class SearchComponent implements OnInit {
 
     onSearchChange(search: string): void {
         this.search.setValue(search);
-        this.open = true;
     }
 
 
     openDialog(searchResult: SearchResult) {
         this.addFilm(searchResult);
-        this.open = false;
+        // this.open = false;
         // this.cdr.markForCheck();
         // return this.tuiDialogService.open(
         //     new PolymorpheusComponent(

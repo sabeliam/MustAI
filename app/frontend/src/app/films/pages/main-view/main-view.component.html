@@ -78,7 +78,8 @@
                 class="film__content"
             >
                 <div *ngIf="film.imgUrl" class="film__poster">
-                    <img [src]="film.imgUrl" alt="img" class="responsive">
+                    <img [imageFallback]="noImage" [src]="film.imgUrl" alt="img" class="responsive" height="50px"
+                         width="50px">
                 </div>
 
                 <div class="film__text">
@@ -91,24 +92,31 @@
                     </p>
                 </div>
 
-                <!--                <button-->
-                <!--                    (click)="removeFilm(film.id, $event)"-->
-                <!--                    appearance="flat"-->
-                <!--                    class="film__remove"-->
-                <!--                    icon="tuiIconTrashLarge"-->
-                <!--                    size="m"-->
-                <!--                    tuiIconButton-->
-                <!--                ></button>-->
-            </div>
-            <div class="film__remove">
                 <button
                     (click)="removeFilm(film.id, $event)"
                     appearance="flat"
+                    class="film__remove"
                     icon="tuiIconTrashLarge"
                     size="m"
                     tuiIconButton
                 ></button>
             </div>
+            <!--            <div class="film__remove">-->
+            <!--                <button-->
+            <!--                    (click)="removeFilm(film.id, $event)"-->
+            <!--                    appearance="flat"-->
+            <!--                    icon="tuiIconTrashLarge"-->
+            <!--                    size="m"-->
+            <!--                    tuiIconButton-->
+            <!--                ></button>-->
+            <!--            </div>-->
         </li>
     </ul>
+</ng-template>
+
+<ng-template #noImage>
+    <tui-svg
+        class="responsive"
+        src="tuiIconImageLarge">
+    </tui-svg>
 </ng-template>
